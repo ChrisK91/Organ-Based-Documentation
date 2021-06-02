@@ -1,0 +1,129 @@
+﻿<!DOCTYPE HTML>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <title>Hello World</title>
+
+    <style>
+        body {
+            font-family: Bahnschrift, Helvetica, Verdana, Arial, sans-serif;
+            color: #000;
+            font-size: 10pt;
+        }
+
+        h1 {
+            font-size: 1.2em;
+            text-decoration: underline;
+            text-decoration-color: #ddd;
+            font-weight: bold;
+            margin: 2mm;
+        }
+
+            span.secondary {
+                font-size: 1em;
+                font-weight: 600;
+                color: #ddd;
+            }
+
+        span.cellcaption {
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: underline;
+            color: #ddd;
+            text-decoration-color: #ddd;
+        }
+
+        table.details {
+            width: 100%;
+            height: 98vh;
+            margin: auto;
+            page-break-inside: auto;
+            border-collapse: collapse;
+        }
+
+            table.details, table.details tr, table.details td {
+                border: 1px solid #808080;
+            }
+
+                table.details tr {
+                    page-break-inside: avoid;
+                    page-break-after: auto
+                }
+
+                table.details tr.lowrow {
+                    height: 15mm;
+                }
+
+                table.details td {
+                    width: auto;
+                    height: auto;
+                    vertical-align: top;
+                }
+    </style>
+</head>
+<body>
+    <table class="details">
+        <thead>
+            <tr>
+                <td colspan="2">
+
+                    <h1>{{ Model.Patient.Name }}, <span class="secondary">{{ Model.Patient.Formatted_Birthday }}, {{ Model.Patient.Age_In_Years}} Jahre), Raum: {{ Model.Room.Name }}</span></h1>
+
+                </td>
+            </tr>
+        </thead>
+        <tr>
+            <td colspan="2">
+                <span class="cellcaption">Diagnosen:</span><br />
+                {{ Model.Diagnosis | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr class="lowrow">
+            <td colspan="2">
+                <span class="cellcaption">Hinweise:</span>{{ Model.Patient.Notes | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="cellcaption">Neurologie:</span><br />
+                {{ Model.Neurologic | newline_to_br_extended }}
+            </td>
+            <td>
+                <span class="cellcaption">Renal:</span><br />
+                {{ Model.Renal | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="cellcaption">Pulmonal:</span><br />
+                {{ Model.Pulmonal | newline_to_br_extended }}
+            </td>
+            <td>
+                <span class="cellcaption">Abdomen:</span><br />
+                {{ Model.Abdominal | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="cellcaption">Kardiologie:</span><br />
+                {{ Model.Cardiology | newline_to_br_extended }}
+            </td>
+            <td>
+                <span class="cellcaption">Infektiologie:</span><br />
+                {{ Model.Infectiology | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="cellcaption">To Do:</span><br />
+                {{ Model.To_Do | newline_to_br_extended }}
+            </td>
+        </tr>
+        <tr class="lowrow">
+            <td colspan="2">
+                <span class="cellcaption">Procedere:</span><br />
+                {{ Model.Procedere | newline_to_br_extended }}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

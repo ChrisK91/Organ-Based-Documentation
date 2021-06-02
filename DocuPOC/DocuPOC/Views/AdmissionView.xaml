@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="DocuPOC.Views.AdmissionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocuPOC.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:AdmissionViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ListBoxBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PatientName}" HorizontalAlignment="Left" FontWeight="SemiBold" FontStretch="Condensed" Margin="2" VerticalAlignment="Bottom" />
+        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8"><Run Text="{Binding PatientAgeInYears}" /><Run FontWeight="Light" Text=" Jahre" /></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8" ><Run Text="{Binding AdmissionTimeInDays}" /><Run FontWeight="Light" Text=" Tage Aufenthalt" /></TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" FontWeight="Bold"  />
+        <TextBlock Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button ToolTipService.ToolTip="In anderen Raum umziehen..." Margin="2">
+                <SymbolIcon Symbol="ContactInfo"/>
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Margin="2">Ziel:</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Margin="2" ItemsSource="{Binding PossibleRooms}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}" />
+                                <Button Margin="2" Command="{Binding MovePatientCommand}">Umziehen</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            
+            <Button ToolTipService.ToolTip="Details..." Margin="2" Command="{Binding OpenAdmissionCommand}">
+                <FontIcon Glyph="&#xE946;" />
+            </Button>
+
+            <Button ToolTipService.ToolTip="Drucken..." Margin="2" Command="{Binding PrintAdmissionCommand}">
+                <SymbolIcon Symbol="Print" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

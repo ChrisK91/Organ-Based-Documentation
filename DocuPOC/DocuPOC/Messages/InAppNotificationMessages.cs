@@ -1,0 +1,20 @@
+﻿using DocuPOC.Models;
+using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DocuPOC.Messages
+{
+    public class ShowInfoMessage : ValueChangedMessage<Tuple<string, int>>
+    {
+        public ShowInfoMessage(Tuple<string,int> value) : base(value) { }
+    }
+
+    public class PrintOverview : ValueChangedMessage<List<Room>>
+    {
+        public PrintOverview(List<Room> value) : base(value) { }
+    }
+}

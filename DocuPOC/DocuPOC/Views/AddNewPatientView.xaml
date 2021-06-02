@@ -1,0 +1,94 @@
+﻿<UserControl
+    x:Class="DocuPOC.Views.AddNewPatientView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocuPOC.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:brushes="using:Microsoft.UI.Xaml.Media" xmlns:componentmodel="using:System.ComponentModel" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers" d:DataContext="{d:DesignInstance Type=viewmodels:AddNewPatientViewModel}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="DetailsSectionState">
+                <VisualState x:Name="SelectedPatientNotNull">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNotEqualStateTrigger Value="{Binding SelectedPatient}" To="{x:Null}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DetailsSelectionPanel.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.Resources>
+            <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <TextBox Width="150" Header="Name" Text="{Binding SearchPatientData.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="2" />
+            <CalendarDatePicker PlaceholderText="Wählen..." Header="Geburtstag" Date="{Binding SearchPatientData.DateOfBirth, Mode=TwoWay}" MinDate="{Binding MinDate}" Margin="2" />
+
+            <Button Command="{Binding AddPatientCommand}" VerticalAlignment="Bottom" ToolTipService.ToolTip="Hinzufügen und auswählen (Strg + Enter)" Margin="2" >
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="Enter" />
+                </Button.KeyboardAccelerators>
+                <SymbolIcon Symbol="AddFriend" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Button>
+
+            <Button Command="{Binding SearchDataCommand}" VerticalAlignment="Bottom" ToolTipService.ToolTip="Suchen (Strg + F)" Margin="2" >
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="F" />
+                </Button.KeyboardAccelerators>
+                <SymbolIcon Symbol="Find" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Button>
+
+            <Button Command="{Binding ResetFieldsCommand}" VerticalAlignment="Bottom" ToolTipService.ToolTip="Eingabefelder zurücksetzen (Strg + Löschen)" Margin="2" >
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="Delete" />
+                </Button.KeyboardAccelerators>
+                <SymbolIcon Symbol="Undo"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Button>
+        </StackPanel>
+
+        <controls:DataGrid MinWidth="500" Grid.Row="1" ItemsSource="{Binding PatientList}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}"/>
+                <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <controls:DataGridTextColumn Header="Geburtstag" Binding="{Binding DateOfBirth, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d}'}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+
+
+        <Grid Grid.Row="2" x:Name="DetailsSelectionPanel" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.25*" />
+                <ColumnDefinition Width="0.25*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock HorizontalAlignment="Stretch" Margin="2" Grid.Column="0" VerticalAlignment="Bottom" Style="{StaticResource BodyTextBlockStyle}">#<Run Text="{Binding SelectedPatient.Id}" /> <Run Text="{Binding SelectedPatient.Name}" /></TextBlock>
+            <CalendarDatePicker Margin="2" Date="{Binding AdmissionDate, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Stretch" Header="Aufnahmedatum" PlaceholderText="Wählen..." />
+            <ComboBox Margin="2" ItemsSource="{Binding RoomList}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Stretch" Header="Raum" />
+        </Grid>
+
+        <controls:Loading IsLoading="{Binding DataLoading}">
+            <controls:Loading.Background>
+                <brushes:AcrylicBrush BackgroundSource="Backdrop"
+                              TintColor="Black"
+                              TintOpacity="0.4" />
+            </controls:Loading.Background>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <ProgressRing IsIndeterminate="True" Margin="5" />
+                <TextBlock>Lade Daten...</TextBlock>
+            </StackPanel>
+        </controls:Loading>
+    </Grid>
+</UserControl>

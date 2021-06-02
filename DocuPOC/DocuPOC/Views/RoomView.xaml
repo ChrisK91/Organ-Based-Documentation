@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="DocuPOC.Views.RoomView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocuPOC.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:DocuPOC.Models" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers" xmlns:viewmodels="using:DocuPOC.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:RoomViewViewModel}"
+    mc:Ignorable="d" HorizontalContentAlignment="Stretch" MinHeight="50">
+
+    <Grid x:Name="ContainerGrid" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TextblockStates">
+                <VisualState x:Name="ListNotEmptyState" />
+                <VisualState x:Name="ListEmptyState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{Binding Admissions}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RoomEmptyMessage.Visibility" Value="Visible" />
+                        <Setter Target="RoomListBox.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="5,15" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+
+        <TextBlock Visibility="Collapsed" x:Name="RoomEmptyMessage" Text="Leer" Style="{ThemeResource SubtitleTextBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Light" FontStyle="Italic" Grid.Column="1" Grid.Row="0" />
+
+        <ItemsControl x:Name="RoomListBox" Visibility="Visible" ItemsSource="{Binding Admissions}" Margin="2" Grid.Column="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:AdmissionView />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="2">
+            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2" ToolTipService.ToolTip="Patient aufnehmen..." Command="{Binding AddPatient}">
+                <SymbolIcon Margin="2" Symbol="AddFriend" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

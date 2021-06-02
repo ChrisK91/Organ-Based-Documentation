@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="DocuPOC.Views.OverviewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocuPOC.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="Frame">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="0">
+            <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}" >
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+                <ItemsRepeater.Layout>
+                    <controls:WrapLayout x:Name="Wrap"
+                                Orientation="Vertical"
+                                VerticalSpacing="5"
+                                HorizontalSpacing="5"
+                                                    />
+                </ItemsRepeater.Layout>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+        <controls:DockPanel Grid.Row="1" >
+            <Button HorizontalAlignment="Right" Command="{Binding PrintOverview}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Print" Margin="4" />
+                    <TextBlock VerticalAlignment="Center">Übersicht drucken</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" controls:DockPanel.Dock="Right">
+                <StackPanel.Resources>
+                    <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+                </StackPanel.Resources>
+                <CheckBox IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Content="Neue Aufnahmen sofort öffnen" Margin="2" />
+                <Slider Width="250" Minimum="250" Maximum="1500" Value="{Binding Width, Mode=TwoWay}" Margin="2" />
+                <SymbolIcon Symbol="ZoomIn" Margin="3" />
+            </StackPanel>
+        </controls:DockPanel>
+    </Grid>
+</UserControl>
