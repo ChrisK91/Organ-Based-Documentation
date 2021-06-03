@@ -7,7 +7,7 @@
         body {
             font-family: Bahnschrift, Helvetica, Verdana, Arial, sans-serif;
             color: #000;
-            font-size: 10pt;
+            font-size: 9pt;
         }
 
         h1 {
@@ -66,7 +66,7 @@
             <tr>
                 <td colspan="2">
 
-                    <h1>{{ Model.Patient.Name }}, <span class="secondary">{{ Model.Patient.Formatted_Birthday }}, {{ Model.Patient.Age_In_Years}} Jahre), Raum: {{ Model.Room.Name }}</span></h1>
+                    <h1>{{ Model.Patient.Name }}, <span class="secondary">({{ Model.Patient.Formatted_Birthday }}, {{ Model.Patient.Age_In_Years}} Jahre), Raum: {{ Model.Room.Name }}</span></h1>
 
                 </td>
             </tr>
@@ -74,54 +74,54 @@
         <tr>
             <td colspan="2">
                 <span class="cellcaption">Diagnosen:</span><br />
-                {{ Model.Diagnosis | newline_to_br_extended }}
+                {{ Model.Diagnosis | newline_to_br_extended | markdown }}
             </td>
         </tr>
         <tr class="lowrow">
             <td colspan="2">
-                <span class="cellcaption">Hinweise:</span>{{ Model.Patient.Notes | newline_to_br_extended }}
+                <span class="cellcaption">Hinweise:</span>{{ Model.Patient.Notes | newline_to_br_extended | markdown}}
             </td>
         </tr>
         <tr>
             <td>
                 <span class="cellcaption">Neurologie:</span><br />
-                {{ Model.Neurologic | newline_to_br_extended }}
+                {{ Model.Neurologic | newline_to_br_extended | markdown}}
             </td>
             <td>
                 <span class="cellcaption">Renal:</span><br />
-                {{ Model.Renal | newline_to_br_extended }}
+                {{ Model.Renal | newline_to_br_extended | markdown}}
             </td>
         </tr>
         <tr>
             <td>
                 <span class="cellcaption">Pulmonal:</span><br />
-                {{ Model.Pulmonal | newline_to_br_extended }}
+                {{ Model.Pulmonal | newline_to_br_extended | markdown}}
             </td>
             <td>
                 <span class="cellcaption">Abdomen:</span><br />
-                {{ Model.Abdominal | newline_to_br_extended }}
+                {{ Model.Abdominal | newline_to_br_extended | markdown}}
             </td>
         </tr>
         <tr>
             <td>
                 <span class="cellcaption">Kardiologie:</span><br />
-                {{ Model.Cardiology | newline_to_br_extended }}
+                {{ Model.Cardiology | newline_to_br_extended | markdown}}
             </td>
             <td>
                 <span class="cellcaption">Infektiologie:</span><br />
-                {{ Model.Infectiology | newline_to_br_extended }}
+                {{ Model.Infectiology | newline_to_br_extended | markdown}}
             </td>
         </tr>
         <tr>
             <td colspan="2">
                 <span class="cellcaption">To Do:</span><br />
-                {{ Model.To_Do | newline_to_br_extended }}
+                {{ Model.To_Do | newline_to_br_extended | markdown}}
             </td>
         </tr>
         <tr class="lowrow">
             <td colspan="2">
                 <span class="cellcaption">Procedere:</span><br />
-                {{ Model.Procedere | newline_to_br_extended }}
+                {{ Model.Procedere | newline_to_br_extended | markdown}}
             </td>
         </tr>
     </table>

@@ -14,20 +14,42 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="0">
-            <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}" >
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                        <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-                <ItemsRepeater.Layout>
-                    <controls:WrapLayout x:Name="Wrap"
-                                Orientation="Vertical"
-                                VerticalSpacing="5"
-                                HorizontalSpacing="5"
-                                                    />
-                </ItemsRepeater.Layout>
-            </ItemsRepeater>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}" Grid.Column="0">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <controls:WrapLayout x:Name="Wrap"
+                                    Orientation="Vertical"
+                                    VerticalSpacing="5"
+                                    HorizontalSpacing="5"
+                                                        />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+
+                <ItemsRepeater ItemsSource="{Binding AdmissionsWithoutRooms}" Grid.Column="1">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <local:AdmissionView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <controls:WrapLayout
+                                    Orientation="Vertical"
+                                    VerticalSpacing="5"
+                                    HorizontalSpacing="5"
+                                                        />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+            </Grid>
         </ScrollViewer>
 
         <controls:DockPanel Grid.Row="1" >
@@ -35,6 +57,13 @@
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Print" Margin="4" />
                     <TextBlock VerticalAlignment="Center">Übersicht drucken</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalAlignment="Right" Command="{Binding OpenHistoryTab}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Find" Margin="4" />
+                    <TextBlock VerticalAlignment="Center">Patienten suchen</TextBlock>
                 </StackPanel>
             </Button>
 

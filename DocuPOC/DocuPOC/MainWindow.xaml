@@ -20,10 +20,14 @@
                 <views:AdmissionDetailView />
             </DataTemplate>
 
+            <DataTemplate x:Key="ArchiveTemplate" x:DataType="viewmodels:PatientArchiveViewModel">
+                <views:PatientArchiveView />
+            </DataTemplate>
+
             <DataTemplate x:Key="EmptyTemplate">
             </DataTemplate>
 
-            <local:MainWindowTabDataTemplateSelector x:Key="TabTemplateSelector" OverviewTemplate="{StaticResource OverviewTemplate}" AdmissionTemplate="{StaticResource AdmissionTemplate}" EmptyTemplate="{StaticResource EmptyTemplate}"/>
+            <local:MainWindowTabDataTemplateSelector x:Key="TabTemplateSelector" ArchiveTemplate="{StaticResource ArchiveTemplate}" OverviewTemplate="{StaticResource OverviewTemplate}" AdmissionTemplate="{StaticResource AdmissionTemplate}" EmptyTemplate="{StaticResource EmptyTemplate}"/>
         </Grid.Resources>
 
         <TabView IsAddTabButtonVisible="False" TabItemsSource="{Binding TabViewViewModels}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTab, Mode=TwoWay}">
@@ -55,7 +59,7 @@
 
             <TabView.TabItemTemplate>
                 <DataTemplate>
-                    <TabViewItem Header="{Binding Header}" HorizontalContentAlignment="Stretch" IsClosable="{Binding CanClose}" CloseRequested="TabViewItem_CloseRequested">
+                    <TabViewItem Header="{Binding Header}" HorizontalContentAlignment="Stretch" CanDrag="{Binding CanDrag}" IsClosable="{Binding CanClose}" CloseRequested="TabViewItem_CloseRequested">
                         <TabViewItem.IconSource>
                             <SymbolIconSource Symbol="{Binding Symbol}" />
                         </TabViewItem.IconSource>

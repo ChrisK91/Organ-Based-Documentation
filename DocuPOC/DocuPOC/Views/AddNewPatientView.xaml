@@ -9,10 +9,10 @@
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="DetailsSectionState">
-                <VisualState x:Name="SelectedPatientNotNull">
+            <VisualStateGroup>
+                <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsNotEqualStateTrigger Value="{Binding SelectedPatient}" To="{x:Null}" />
+                        <triggers:IsNotEqualStateTrigger Value="{Binding SelectedPatient, Mode=OneWay}" To="{x:Null}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="DetailsSelectionPanel.Visibility" Value="Visible" />

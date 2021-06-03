@@ -15,6 +15,7 @@ namespace DocuPOC.Models
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public string Notes { get; set; }
+        public List<Admission> Admissions { get; set; }
 
         public string FormattedBirthday
         {

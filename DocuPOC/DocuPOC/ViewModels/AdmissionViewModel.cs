@@ -1,6 +1,7 @@
 ﻿using DocuPOC.Messages;
 using DocuPOC.Models;
 using DotLiquid;
+using DotLiquid.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -57,11 +58,16 @@ namespace DocuPOC.ViewModels
         private string diagnosis;
         public string Diagnosis { get => diagnosis; set => SetProperty(ref diagnosis, value); }
 
+        private DateTimeOffset dischargeDate = new DateTimeOffset(DateTime.Today);
+        public DateTimeOffset DischargeDate { get => dischargeDate; set => SetProperty(ref dischargeDate, value); }
+
         public IRelayCommand MovePatientCommand { get; }
 
         public IRelayCommand OpenAdmissionCommand { get; }
 
         public IRelayCommand PrintAdmissionCommand { get; }
+
+        public IRelayCommand DischargeAdmissionCommand { get; }
 
         public AdmissionViewModel(Admission admission)
         {
@@ -71,6 +77,7 @@ namespace DocuPOC.ViewModels
             MovePatientCommand = new RelayCommand(MovePatient, CanMovePatientExecute);
             OpenAdmissionCommand = new RelayCommand(OpenAdmission);
             PrintAdmissionCommand = new RelayCommand(PrintAdmission);
+            DischargeAdmissionCommand = new RelayCommand(DischargeAdmission);
 
             WeakReferenceMessenger.Default.Register<PatientUpdatedMessage>(this, (r, m)=>
             {
@@ -83,6 +90,18 @@ namespace DocuPOC.ViewModels
             UpdatePossibleRooms();
         }
 
+        private void DischargeAdmission()
+        {
+            var db = new Database.DataContext();
+            db.Attach(admission);
+            admission.DischargeDateTime = DischargeDate.DateTime;
+            admission.Room.Admissions.Remove(admission);
+            db.SaveChanges();
+
+            WeakReferenceMessenger.Default.Send(new AdmissionDischargedMessage(admission));
+
+        }
+
         private void PrintAdmission()
         {
             WeakReferenceMessenger.Default.Send(new PrintAdmissionMessage(admission));
@@ -92,7 +111,6 @@ namespace DocuPOC.ViewModels
         {
             var db = new Database.DataContext();
             var admission = db.Admissions.Include(a => a.Patient).Where(a => a.AdmissionId == this.admission.AdmissionId).First();
-
             SetDataByAdmission(admission);
         }
 

@@ -14,6 +14,7 @@ namespace DocuPOC.Services
 {
     public static class ServiceManager
     {
+
         public static void SetUpServices()
         {
             Ioc.Default.ConfigureServices(new ServiceCollection()
@@ -50,6 +51,13 @@ namespace DocuPOC.Services
                     Name = "Mustermann, Margarete"
                 });
 
+                db.Patients.Add(new Patient()
+                {
+                    Birthday = DateTime.Now - new TimeSpan(20 * 365, 0, 0, 0),
+                    Name = "Wurst, Hans",
+                    Notes = "Einbettzimmer"
+                });
+
                 db.SaveChanges();
 
                 db.Admissions.Add(new Admission()
@@ -66,6 +74,15 @@ namespace DocuPOC.Services
                     AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
                     Patient = db.Patients.Where(p => p.Name == "Mustermann, Margarete").First(),
                     Room = db.Rooms.Where(r => r.Name == "100").First()
+                });
+
+                db.Admissions.Add(new Admission()
+                {
+                    Diagnosis = "Testdiagnose 1, **Fett**",
+                    AdmissionDateTime = DateTime.Now - new TimeSpan(10, 0,0,0),
+                    DischargeDateTime = DateTime.Now - new TimeSpan(1,0,0,0),
+                    Abdominal = "Abdominaleintrag",
+                    Cardiology = "Karidologieeintrag"
                 });
 
                 db.SaveChanges();

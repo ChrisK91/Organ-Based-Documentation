@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.WindowManagement;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +27,7 @@ namespace DocuPOC
     {
         public DataTemplate OverviewTemplate { get; set; }
         public DataTemplate AdmissionTemplate { get; set; }
+        public DataTemplate ArchiveTemplate { get; set; }
         public DataTemplate EmptyTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
@@ -34,6 +36,7 @@ namespace DocuPOC
             {
                 case OverviewViewModel: return OverviewTemplate;
                 case AdmissionDetailViewModel: return AdmissionTemplate;
+                case PatientArchiveViewModel: return ArchiveTemplate;
                 default: return EmptyTemplate;
             }
         }
@@ -68,10 +71,22 @@ namespace DocuPOC
 
         private void TabViewItem_CloseRequested(TabViewItem sender, TabViewTabCloseRequestedEventArgs args)
         {
-            if (sender.DataContext != null && sender.DataContext is AdmissionDetailViewModel)
+            if (sender.DataContext != null)
             {
+                handleTabClose(sender.DataContext);
+            }
+        }
 
-                WeakReferenceMessenger.Default.Send(new CloseAdmissionDetailsMessage(sender.DataContext as AdmissionDetailViewModel));
+        private void handleTabClose(object sender)
+        {
+            switch (sender)
+            {
+                case AdmissionDetailViewModel:
+                    WeakReferenceMessenger.Default.Send(new CloseAdmissionDetailsMessage(sender as AdmissionDetailViewModel));
+                    break;
+                case PatientArchiveViewModel:
+                    WeakReferenceMessenger.Default.Send(new CloseGenericTabMessage(sender as ITabViewModel));
+                    break;
             }
         }
 
@@ -79,10 +94,7 @@ namespace DocuPOC
         {
             var InvokedTabView = (args.Element as TabView);
 
-            if(InvokedTabView.SelectedItem is AdmissionDetailViewModel)
-            {
-                WeakReferenceMessenger.Default.Send(new CloseAdmissionDetailsMessage(InvokedTabView.SelectedItem as AdmissionDetailViewModel));
-            }
+            handleTabClose(InvokedTabView.SelectedItem);
 
             args.Handled = true;
         }

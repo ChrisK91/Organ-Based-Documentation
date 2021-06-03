@@ -24,6 +24,11 @@ namespace DocuPOC.Messages
         public AdmissionMovedMessage(Admission value) : base(value) { }
     }
 
+    public class AdmissionDischargedMessage : ValueChangedMessage<Admission>
+    {
+        public AdmissionDischargedMessage(Admission value) : base(value) { }
+    }
+
     public class NewAdmissionMessage : ValueChangedMessage<Admission>
     {
         public NewAdmissionMessage(Admission value) : base(value) { }

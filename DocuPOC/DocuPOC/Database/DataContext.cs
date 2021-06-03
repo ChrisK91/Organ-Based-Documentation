@@ -13,8 +13,6 @@ namespace DocuPOC.Database
 {
     public class DataContext : DbContext
     {
-        private string defaultPath { get; } = System.IO.Path.Combine(AppContext.BaseDirectory, "database.db");
-
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Admission> Admissions { get; set; }
@@ -22,7 +20,7 @@ namespace DocuPOC.Database
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var builder = new SqliteConnectionStringBuilder();
-            builder.DataSource = Ioc.Default.GetService<ISettingsService>().GetSettingWithDefault("DatabaseLocation", defaultPath);
+            builder.DataSource = Ioc.Default.GetService<ISettingsService>().GetSettingWithDefault("DatabaseLocation", SettingsService.DefaultDatabaseLocation);
 
             options.UseSqlite(builder.ToString());
         }

@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace DocuPOC.ViewModels
 {
-    public class AdmissionDetailViewModel : ObservableObject
+    public class AdmissionDetailViewModel : ObservableObject, ITabViewModel
     {
         private Admission admission;
 
@@ -23,6 +23,7 @@ namespace DocuPOC.ViewModels
 
         public string Header { get => PatientName; }
         public bool CanClose { get => true; }
+        public bool CanDrag { get => true; }
 
         public Microsoft.UI.Xaml.Controls.Symbol Symbol { get => Microsoft.UI.Xaml.Controls.Symbol.Contact; }
 

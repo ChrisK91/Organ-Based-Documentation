@@ -17,13 +17,20 @@ using System.Windows.Input;
 
 namespace DocuPOC.ViewModels
 {
-    public class OverviewViewModel : ObservableRecipient
+    public class OverviewViewModel : ObservableRecipient, ITabViewModel
     {
         private ObservableCollection<RoomViewViewModel> rooms;
         public ObservableCollection<RoomViewViewModel> Rooms
         {
             get => rooms;
             set => SetProperty(ref rooms, value);
+        }
+
+        private ObservableCollection<AdmissionViewModel> admissionsWithoutRooms;
+        public ObservableCollection<AdmissionViewModel> AdmissionsWithoutRooms
+        {
+            get => admissionsWithoutRooms;
+            set => SetProperty(ref admissionsWithoutRooms, value);
         }
 
         private int width = 450;
@@ -35,6 +42,7 @@ namespace DocuPOC.ViewModels
 
         public string Header { get; private set; } = "Übersicht";
         public bool CanClose { get => false; }
+        public bool CanDrag { get => false; }
 
         private bool openNewAdmission = true;
         public bool OpenNewAdmission
@@ -46,18 +54,31 @@ namespace DocuPOC.ViewModels
         public Microsoft.UI.Xaml.Controls.Symbol Symbol { get => Microsoft.UI.Xaml.Controls.Symbol.Home; }
 
         public IRelayCommand PrintOverview { get; set; }
+        public IRelayCommand OpenHistoryTab { get; set; }
 
         public OverviewViewModel()
         {
             Rooms = new ObservableCollection<RoomViewViewModel>();
+            AdmissionsWithoutRooms = new ObservableCollection<AdmissionViewModel>();
+
             PrintOverview = new RelayCommand(() =>
             {
                 WeakReferenceMessenger.Default.Send(new PrintOverview(Rooms.Select(r => r.Room).ToList()));
             });
 
+            OpenHistoryTab = new RelayCommand(() =>
+            {
+                WeakReferenceMessenger.Default.Send(new OpenPatientArchiveMessage());
+            });
+
             LoadData();
 
             WeakReferenceMessenger.Default.Register<OverviewViewModel, AdmissionMovedMessage>(this, (r, m) =>
+            {
+                LoadData();
+            });
+
+            WeakReferenceMessenger.Default.Register<OverviewViewModel, AdmissionDischargedMessage>(this, (r, m) =>
             {
                 LoadData();
             });
@@ -76,8 +97,15 @@ namespace DocuPOC.ViewModels
         private void LoadData()
         {
             Rooms.Clear();
+            AdmissionsWithoutRooms.Clear();
+
             var db = new DataContext();
-            db.Rooms.Include(r => r.Admissions).ThenInclude(a => a.Patient).ForEachAsync(r => Rooms.Add(new RoomViewViewModel(r)));
+            db.Rooms
+                .Include(r => r.Admissions.Where(a => a.DischargeDateTime == null)) // select Admission without a discharge date
+                .ThenInclude(a => a.Patient)
+                .ForEachAsync(r => Rooms.Add(new RoomViewViewModel(r)));
+
+            db.Admissions.Where(a => a.Room == null && a.DischargeDateTime == null).Include(a => a.Patient).ForEachAsync(a => AdmissionsWithoutRooms.Add(new AdmissionViewModel(a)));
         }
     }
 }

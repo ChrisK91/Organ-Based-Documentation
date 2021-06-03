@@ -20,7 +20,7 @@ namespace DocuPOC.Models
         public Patient Patient { get; set; }
 
         public DateTime AdmissionDateTime { get; set; }
-        public DateTime DischargeDateTime { get; set; }
+        public DateTime? DischargeDateTime { get; set; }
 
         public string Diagnosis { get; set; }
         public string Neurologic { get; set; }
@@ -32,7 +32,7 @@ namespace DocuPOC.Models
         public string ToDo { get; set; }
         public string Procedere { get; set; }
 
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         public Room Room { get; set; }
 
         public int AdmissionTimeInDays

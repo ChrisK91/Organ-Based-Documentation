@@ -15,6 +15,7 @@
     <None Remove="Views\AdmissionDetailView.xaml" />
     <None Remove="Views\AdmissionView.xaml" />
     <None Remove="Views\OverviewView.xaml" />
+    <None Remove="Views\PatientArchiveView.xaml" />
     <None Remove="Views\RoomView.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +30,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.0.2" />
     <PackageReference Include="DotLiquid" Version="2.1.436" />
+    <PackageReference Include="Markdig" Version="0.24.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
     <PackageReference Include="Microsoft.ProjectReunion" Version="0.5.7" />
@@ -37,6 +39,12 @@
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\PatientArchiveView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

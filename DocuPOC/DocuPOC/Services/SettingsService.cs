@@ -10,6 +10,9 @@ namespace DocuPOC.Services
     {
         Configuration settingsConfiguration;
 
+        public static readonly string DefaultTemporaryDirectory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "DocuPOC");
+        public static readonly string DefaultDatabaseLocation = System.IO.Path.Combine(System.AppContext.BaseDirectory, "database.db");
+
         public SettingsService()
         {
             settingsConfiguration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

@@ -1,6 +1,7 @@
 ﻿using DocuPOC.Messages;
 using DocuPOC.Models;
 using DotLiquid;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Automation.Peers;
 using System;
@@ -20,6 +21,12 @@ namespace DocuPOC.Services
         {
             input = string.IsNullOrWhiteSpace(input) ? input : Regex.Replace(input, @"(\r?\n)", "<br />$1", RegexOptions.None, Template.RegexTimeOut);
             input = string.IsNullOrWhiteSpace(input) ? input : Regex.Replace(input, @"(\r)", "<br />$1", RegexOptions.None, Template.RegexTimeOut);
+            return input;
+        }
+
+        public static string Markdown(string input)
+        {
+            input = string.IsNullOrWhiteSpace(input) ? input : Markdig.Markdown.ToHtml(input);
             return input;
         }
     }
@@ -50,42 +57,39 @@ namespace DocuPOC.Services
 
         private async void printOverview(List<Room> roomList)
         {
-            string tempDirectory = System.IO.Path.GetTempPath();
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Templates/OverviewTemplate.html"));
 
-            var outputDestination = System.IO.Path.Combine(tempDirectory, Guid.NewGuid().ToString() + ".html");
-
-            string templateSource = await Windows.Storage.FileIO.ReadTextAsync(file);
-
-            Template t = Template.Parse(templateSource);
-            var model = new { Model = roomList };
-
-            var content = t.Render(Hash.FromAnonymousObject(model));
-
-
-            File.WriteAllText(outputDestination, content);
+            string outputDestination = await createTemplatedFileAsync(roomList, file);
 
             WeakReferenceMessenger.Default.Send(new ShowPdfMessage(outputDestination));
         }
 
         private async void printAdmission(Admission admission)
         {
-            string tempDirectory = System.IO.Path.GetTempPath();
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Templates/PatientPrintoutTemplate.html"));
+
+            string outputDestination = await createTemplatedFileAsync(admission, file);
+
+            WeakReferenceMessenger.Default.Send(new ShowPdfMessage(outputDestination));
+        }
+
+        private static async Task<string> createTemplatedFileAsync(object documentModel, StorageFile template)
+        {
+            string tempDirectory = Ioc.Default.GetService<ISettingsService>().GetSettingWithDefault("output_destination", SettingsService.DefaultTemporaryDirectory);
+            Directory.CreateDirectory(tempDirectory);
 
             var outputDestination = System.IO.Path.Combine(tempDirectory, Guid.NewGuid().ToString() + ".html");
 
-            string templateSource = await Windows.Storage.FileIO.ReadTextAsync(file);
+            string templateSource = await Windows.Storage.FileIO.ReadTextAsync(template);
 
             Template t = Template.Parse(templateSource);
-            var model = new { Model = admission };
+            var model = new { Model = documentModel };
 
             var content = t.Render(Hash.FromAnonymousObject(model));
 
 
             File.WriteAllText(outputDestination, content);
-
-            WeakReferenceMessenger.Default.Send(new ShowPdfMessage(outputDestination));
+            return outputDestination;
         }
     }
 }
