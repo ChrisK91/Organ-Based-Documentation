@@ -37,7 +37,7 @@
 
         <TextBlock Visibility="Collapsed" x:Name="RoomEmptyMessage" Text="Leer" Style="{ThemeResource SubtitleTextBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Light" FontStyle="Italic" Grid.Column="1" Grid.Row="0" />
 
-        <ItemsControl x:Name="RoomListBox" Visibility="Visible" ItemsSource="{Binding Admissions}" Margin="2" Grid.Column="1">
+        <ItemsControl x:Name="RoomListBox" Visibility="Visible" ItemsSource="{Binding Admissions}" Margin="0" Grid.Column="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:AdmissionView />

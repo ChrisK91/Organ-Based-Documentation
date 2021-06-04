@@ -60,7 +60,7 @@ namespace DocuPOC.ViewModels
 
             if (a.DischargeDateTime is DateTime && a.DischargeDateTime?.Year <= 1) // TODO: convert to try-catch
             {
-                // invalid Date-Time has been set
+                // invalid Date-Time has been set, Setting it to a value ensures that a delete is possible
                 DischargeDate = DateTimeOffset.MinValue;
             }
             else

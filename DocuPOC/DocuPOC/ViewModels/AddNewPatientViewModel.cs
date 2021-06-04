@@ -151,7 +151,7 @@ namespace DocuPOC.ViewModels
 
             if (SearchPatientData.DateOfBirth != null)
             {
-                patients = patients.Where(p => p.Birthday == ((DateTimeOffset)SearchPatientData.DateOfBirth).DateTime);
+                patients = patients.Where(p => p.Birthday.Date == ((DateTimeOffset)SearchPatientData.DateOfBirth).Date);
             }
 
             await patients.LoadAsync();

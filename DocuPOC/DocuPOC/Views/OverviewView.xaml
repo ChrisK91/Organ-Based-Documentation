@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DocuPOC.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
     mc:Ignorable="d">
 
     <Grid x:Name="Frame">
@@ -13,42 +13,57 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <converters:EmptyCollectionToObjectConverter x:Key="EmptyToCollapsedConverter" EmptyValue="Collapsed" NotEmptyValue="Visible" />
+        </Grid.Resources>
+
         <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                
-                <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}" Grid.Column="0">
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <controls:WrapLayout x:Name="Wrap"
-                                    Orientation="Vertical"
-                                    VerticalSpacing="5"
-                                    HorizontalSpacing="5"
-                                                        />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
 
-                <ItemsRepeater ItemsSource="{Binding AdmissionsWithoutRooms}" Grid.Column="1">
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <local:AdmissionView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <controls:WrapLayout
+                <controls:HeaderedContentControl Grid.Column="0">
+                    <controls:HeaderedContentControl.Header>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}">Belegung</TextBlock>
+                    </controls:HeaderedContentControl.Header>
+
+                    <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                        <ItemsRepeater.Layout>
+                            <controls:WrapLayout x:Name="Wrap"
                                     Orientation="Vertical"
                                     VerticalSpacing="5"
                                     HorizontalSpacing="5"
                                                         />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </controls:HeaderedContentControl>
+
+                <controls:HeaderedContentControl Grid.Column="1" Visibility="{Binding AdmissionsWithoutRooms, Mode=TwoWay, Converter={StaticResource EmptyToCollapsedConverter}}">
+                    <controls:HeaderedContentControl.Header>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}">Ohne Zimmer</TextBlock>
+                    </controls:HeaderedContentControl.Header>
+                    <ItemsRepeater ItemsSource="{Binding AdmissionsWithoutRooms}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <local:AdmissionView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                        <ItemsRepeater.Layout>
+                            <controls:WrapLayout
+                                    Orientation="Vertical"
+                                    VerticalSpacing="5"
+                                    HorizontalSpacing="5"
+                                                        />
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </controls:HeaderedContentControl>
             </Grid>
         </ScrollViewer>
 
@@ -60,7 +75,10 @@
                 </StackPanel>
             </Button>
 
-            <Button HorizontalAlignment="Right" Command="{Binding OpenHistoryTab}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
+            <Button HorizontalAlignment="Right" ToolTipService.ToolTip="Strg + F" Command="{Binding OpenHistoryTab}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="F" />
+                </Button.KeyboardAccelerators>
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Find" Margin="4" />
                     <TextBlock VerticalAlignment="Center">Patienten suchen</TextBlock>

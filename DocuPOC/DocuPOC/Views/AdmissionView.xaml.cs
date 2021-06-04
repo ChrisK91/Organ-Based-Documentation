@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using DocuPOC.Messages;
+using DocuPOC.ViewModels;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -23,6 +26,15 @@ namespace DocuPOC.Views
         public AdmissionView()
         {
             this.InitializeComponent();
+        }
+
+        private void UserControl_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if(sender is AdmissionView && ((AdmissionView)sender).DataContext != null && ((AdmissionView)sender).DataContext is AdmissionViewModel)
+            {
+                var model = (AdmissionViewModel)((AdmissionView)sender).DataContext;
+                WeakReferenceMessenger.Default.Send(new OpenAdmissionDetailsMessage(model.Admission));
+            }
         }
     }
 }

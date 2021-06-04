@@ -47,7 +47,10 @@
                     </TextBlock>
                 </StackPanel>
 
-                <Button HorizontalAlignment="Right" Command="{Binding PrintAdmission}" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
+                <Button HorizontalAlignment="Right" Command="{Binding PrintAdmission}" ToolTipService.ToolTip="Strg + P" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="P" Modifiers="Control" />
+                    </Button.KeyboardAccelerators>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Print" Margin="4" />
                         <TextBlock VerticalAlignment="Center">Drucken</TextBlock>

@@ -5,9 +5,9 @@
     xmlns:local="using:DocuPOC.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" d:DataContext="{d:DesignInstance Type=viewmodels:AdmissionViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d" DoubleTapped="UserControl_DoubleTapped">
 
-    <Grid Background="{ThemeResource ListBoxBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource SystemChromeLowColor}" Padding="5" BorderBrush="Transparent" BorderThickness="1.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -23,8 +23,8 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PatientName}" HorizontalAlignment="Left" FontWeight="SemiBold" FontStretch="Condensed" Margin="2" VerticalAlignment="Bottom" />
         <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8"><Run Text="{Binding PatientAgeInYears}" /><Run FontWeight="Light" Text=" Jahre" /></TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8" ><Run Text="{Binding AdmissionTimeInDays}" /><Run FontWeight="Light" Text=" Tage Aufenthalt" /></TextBlock>
-        <controls:MarkdownTextBlock Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" FontWeight="Bold"  />
-        <controls:MarkdownTextBlock Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
+        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" FontWeight="Bold"  />
+        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <Button ToolTipService.ToolTip="In anderen Raum umziehen..." Margin="2">
