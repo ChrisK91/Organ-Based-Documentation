@@ -85,6 +85,8 @@
                 </StackPanel>
             </Button>
 
+            <TextBlock Text="{Binding DatabaseLocation}" ToolTipService.ToolTip="{Binding DatabaseLocation}" />
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" controls:DockPanel.Dock="Right">
                 <StackPanel.Resources>
                     <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />

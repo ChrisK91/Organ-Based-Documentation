@@ -2,8 +2,10 @@
 using DocuPOC.Database;
 using DocuPOC.Messages;
 using DocuPOC.Models;
+using DocuPOC.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
@@ -39,6 +41,9 @@ namespace DocuPOC.ViewModels
             get => width;
             set => SetProperty(ref width, value);
         }
+
+
+        public string DatabaseLocation { get => Ioc.Default.GetService<ISettingsService>().GetSettingWithDefault("DatabaseLocation", SettingsService.DefaultDatabaseLocation); }
 
         public string Header { get; private set; } = "Übersicht";
         public bool CanClose { get => false; }

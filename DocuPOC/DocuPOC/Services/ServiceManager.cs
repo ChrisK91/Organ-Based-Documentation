@@ -82,7 +82,8 @@ namespace DocuPOC.Services
                     AdmissionDateTime = DateTime.Now - new TimeSpan(10, 0,0,0),
                     DischargeDateTime = DateTime.Now - new TimeSpan(1,0,0,0),
                     Abdominal = "Abdominaleintrag",
-                    Cardiology = "Karidologieeintrag"
+                    Cardiology = "Karidologieeintrag",
+                    Patient = db.Patients.Where(p => p.Name == "Wurst, Hans").First(),
                 });
 
                 db.SaveChanges();
