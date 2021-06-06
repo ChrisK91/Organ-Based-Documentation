@@ -77,12 +77,24 @@ namespace DocuPOC
             }
         }
 
-        private void handleTabClose(object sender)
+        private async void handleTabClose(object sender)
         {
             switch (sender)
             {
                 case AdmissionDetailViewModel:
-                    WeakReferenceMessenger.Default.Send(new CloseAdmissionDetailsMessage(sender as AdmissionDetailViewModel));
+                    var vm = sender as AdmissionDetailViewModel;
+
+                    if(vm.IsDirty)
+                    {
+                        var result = await ConfirmCloseDialog.ShowAsync();
+
+                        if(result == ContentDialogResult.Primary)
+                        {
+                            return;
+                        }
+                    }
+
+                    WeakReferenceMessenger.Default.Send(new CloseAdmissionDetailsMessage(vm));
                     break;
                 case PatientArchiveViewModel:
                     WeakReferenceMessenger.Default.Send(new CloseGenericTabMessage(sender as ITabViewModel));

@@ -85,8 +85,6 @@
                 </StackPanel>
             </Button>
 
-            <TextBlock Text="{Binding DatabaseLocation}" ToolTipService.ToolTip="{Binding DatabaseLocation}" />
-
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" controls:DockPanel.Dock="Right">
                 <StackPanel.Resources>
                     <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
@@ -94,6 +92,9 @@
                 <CheckBox IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Content="Neue Aufnahmen sofort öffnen" Margin="2" />
                 <Slider Width="250" Minimum="250" Maximum="1500" Value="{Binding Width, Mode=TwoWay}" Margin="2" />
                 <SymbolIcon Symbol="ZoomIn" Margin="3" />
+
+
+                <FontIcon Margin="3" Glyph="&#xE946;" ToolTipService.ToolTip="{Binding DatabaseLocation}" />
             </StackPanel>
         </controls:DockPanel>
     </Grid>

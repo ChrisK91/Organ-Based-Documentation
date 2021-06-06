@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,7 +22,8 @@ namespace DocuPOC.ViewModels
         private string patientName;
         public string PatientName { get => patientName; set => SetProperty(ref patientName, value); }
 
-        public string Header { get => PatientName; }
+        private string header;
+        public string Header { get => header; set => SetProperty(ref header, value); }
         public bool CanClose { get => true; }
         public bool CanDrag { get => true; }
 
@@ -84,6 +86,9 @@ namespace DocuPOC.ViewModels
         private string procedere;
         public string Procedere { get => procedere; set => SetProperty(ref procedere, value); }
 
+        private bool isDirty;
+        public bool IsDirty { get => isDirty; set => SetProperty(ref isDirty, value); }
+
 
         public int AdmissionId { get => admission.AdmissionId; }
 
@@ -108,8 +113,37 @@ namespace DocuPOC.ViewModels
             Neurology = admission.Neurologic;
             Infectiology = admission.Infectiology;
 
+            Header = admission.Patient.Name;
+
+            this.PropertyChanged += MarkDirty;
+
             SaveChanges = new RelayCommand(SavePatientChanges);
             PrintAdmission = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new PrintAdmissionMessage(this.admission)); });
+        }
+
+        private void MarkDirty(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case nameof(PatientName):
+                case nameof(PatientAgeInYears):
+                case nameof(PatientNotes):
+                case nameof(Diagnosis):
+                case nameof(PatientDob):
+                case nameof(AdmissionDate):
+                case nameof(Pulmonal):
+                case nameof(Abdominal):
+                case nameof(Cardial):
+                case nameof(Renal):
+                case nameof(Neurology):
+                case nameof(Infectiology):
+                    IsDirty = true;
+                    break;
+
+                case nameof(IsDirty):
+                    Header = IsDirty ? PatientName + " *" : PatientName;
+                    break;
+            }
         }
 
         private void SavePatientChanges()
@@ -135,10 +169,10 @@ namespace DocuPOC.ViewModels
 
             db.SaveChanges();
 
-
-
             WeakReferenceMessenger.Default.Send(new PatientUpdatedMessage(patient));
             WeakReferenceMessenger.Default.Send(new ShowInfoMessage(new Tuple<string, int>("Daten gespeichert", 1500)));
+
+            IsDirty = false;
         }
     }
 }

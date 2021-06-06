@@ -42,7 +42,7 @@
                         <TextBlock.ContextFlyout>
                             <Flyout>
                                 <CalendarDatePicker Date="{Binding AdmissionDate, Mode=TwoWay}" />
-                            </Flyout>
+                            </Flyout> 
                         </TextBlock.ContextFlyout>
                     </TextBlock>
                 </StackPanel>
