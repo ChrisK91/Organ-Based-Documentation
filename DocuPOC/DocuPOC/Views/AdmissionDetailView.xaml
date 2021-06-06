@@ -82,8 +82,8 @@
                         <RowDefinition Height="0.4*" />
                         <RowDefinition Height="0.6*" />
                     </Grid.RowDefinitions>
-                    <TextBox Margin="2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding PatientNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Notizen:" />
-                    <TextBox Margin="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Diagnosen:" />
+                    <TextBox Margin="4,2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding PatientNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Notizen:" />
+                    <TextBox Margin="4,2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Diagnosen:" />
                 </Grid>
 
                 <Grid Grid.Column="1">
@@ -96,10 +96,10 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBox Margin="2" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Text="{Binding Neurology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Neurologie:"  MinWidth="250" MinHeight="150" />
+                    <TextBox Margin="2" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Neurology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Neurologie:"  MinWidth="250" MinHeight="150" />
                     <TextBox Margin="2" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Renal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Renal:" MinWidth="250" MinHeight="150" />
 
-                    <TextBox Margin="2" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Text="{Binding Pulmonal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Pulmonal:" MinWidth="250" MinHeight="150" />
+                    <TextBox Margin="2" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Pulmonal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Pulmonal:" MinWidth="250" MinHeight="150" />
                     <TextBox Margin="2" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Abdominal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Abdominell:" MinWidth="250" MinHeight="150" />
 
                     <TextBox Margin="2" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Cardial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Kardial:" MinWidth="250" MinHeight="150" />
@@ -111,8 +111,8 @@
                         <RowDefinition Height="0.4*" />
                         <RowDefinition Height="0.6*" />
                     </Grid.RowDefinitions>
-                    <TextBox Margin="2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding ToDo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="To-Do:" MinWidth="250" MinHeight="150" />
-                    <TextBox Margin="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Procedere, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Procedere:" MinWidth="250" MinHeight="50" />
+                    <TextBox Margin="4,2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding ToDo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="To-Do:" MinWidth="250" MinHeight="150" />
+                    <TextBox Margin="4,2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Procedere, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Procedere:" MinWidth="250" MinHeight="50" />
                 </Grid>
             </Grid>
         </ScrollViewer>
