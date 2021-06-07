@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using DocuPOC.Messages;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -23,6 +25,8 @@ namespace DocuPOC.Views
         public OverviewView()
         {
             this.InitializeComponent();
+
+            WeakReferenceMessenger.Default.Register<OverviewView, DisplayLoadingIndicator>(this, (r, m)=>{ RotateRefreshIcon.Begin(); });
         }
     }
 }

@@ -103,7 +103,7 @@ namespace DocuPOC.ViewModels
             PatientAgeInYears = admission.Patient.AgeInYears;
             AdmissionTimeInDays = admission.AdmissionTimeInDays;
             PatientNotes = admission.Patient.Notes;
-            Diagnosis = admission.Diagnosis;
+            Diagnosis = admission.Diagnosis.GetLastVersionedEntry();
             PatientDob = admission.Patient.Birthday;
             AdmissionDate = admission.AdmissionDateTime;
             Pulmonal = admission.Pulmonal;
@@ -156,7 +156,7 @@ namespace DocuPOC.ViewModels
             patient.Birthday = PatientDob.DateTime;
 
             db.Attach(this.admission);
-            this.admission.Diagnosis = Diagnosis;
+            this.admission.SetDiagnosis(Diagnosis);
             this.admission.AdmissionDateTime = AdmissionDate.DateTime;
             this.admission.Pulmonal = Pulmonal;
             this.admission.Abdominal = Abdominal;

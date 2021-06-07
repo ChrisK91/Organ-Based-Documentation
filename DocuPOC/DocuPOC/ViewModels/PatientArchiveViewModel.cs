@@ -81,7 +81,7 @@ namespace DocuPOC.ViewModels
 
             if (!String.IsNullOrEmpty(SearchName))
             {
-                patients = patients.Where(p => p.Name.Contains(SearchName));
+                patients = patients.Where(p => EF.Functions.Like(SearchName, p.Name));
             }
 
             if(SearchBirthday != null)
@@ -89,7 +89,7 @@ namespace DocuPOC.ViewModels
                 patients = patients.Where(p => p.Birthday.Date == SearchBirthday.Value.Date);
             }
 
-            await patients.Include(p => p.Admissions).ForEachAsync(p => PatientList.Add(new PatientDataListEntryWithAdmissionDetails(p)));
+            await patients.Include(p => p.Admissions).ThenInclude(a => a.Diagnosis.OrderByDescending(v => v.Timestamp).Take(1)).ForEachAsync(p => PatientList.Add(new PatientDataListEntryWithAdmissionDetails(p)));
 
             SelectedAdmission = null;
             SelectedPatient = null;
@@ -103,7 +103,7 @@ namespace DocuPOC.ViewModels
             PatientList.Clear();
 
             var db = new Database.DataContext();
-            var patients = await db.Patients.Take(50).Include(p => p.Admissions).ToListAsync();
+            var patients = await db.Patients.Take(50).Include(p => p.Admissions).ThenInclude(a => a.Diagnosis.OrderByDescending(v => v.Timestamp).Take(1)).ToListAsync();
 
             foreach (var p in patients)
             {

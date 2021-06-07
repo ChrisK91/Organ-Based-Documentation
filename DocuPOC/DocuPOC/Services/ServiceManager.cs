@@ -1,6 +1,9 @@
 ﻿using DocuPOC.Database;
 using DocuPOC.Models;
 using DotLiquid;
+using DotLiquid.Tags;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System;
@@ -31,62 +34,8 @@ namespace DocuPOC.Services
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
 
-                db.Rooms.Add(new Room() { Name = "100" });
-                db.Rooms.Add(new Room() { Name = "101" });
-                db.Rooms.Add(new Room() { Name = "102" });
-                db.Rooms.Add(new Room() { Name = "200" });
-                db.Rooms.Add(new Room() { Name = "201" });
-                db.Rooms.Add(new Room() { Name = "205" });
+                Helpers.GenerateTestData();
 
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(70 * 365, 0, 0, 0),
-                    Name = "Mustermann, Max",
-                    Notes = "Allergie!"
-                });
-
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(100 * 365, 0, 0, 0),
-                    Name = "Mustermann, Margarete"
-                });
-
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(20 * 365, 0, 0, 0),
-                    Name = "Wurst, Hans",
-                    Notes = "Einbettzimmer"
-                });
-
-                db.SaveChanges();
-
-                db.Admissions.Add(new Admission()
-                {
-                    Diagnosis = "Testeintrag #1",
-                    AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
-                    Patient = db.Patients.Where(p => p.Name == "Mustermann, Max").First(),
-                    Room = db.Rooms.Where(r => r.Name == "100").First()
-                });
-
-                db.Admissions.Add(new Admission()
-                {
-                    Diagnosis = "Testeintrag #1",
-                    AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
-                    Patient = db.Patients.Where(p => p.Name == "Mustermann, Margarete").First(),
-                    Room = db.Rooms.Where(r => r.Name == "100").First()
-                });
-
-                db.Admissions.Add(new Admission()
-                {
-                    Diagnosis = "Testdiagnose 1, **Fett**",
-                    AdmissionDateTime = DateTime.Now - new TimeSpan(10, 0,0,0),
-                    DischargeDateTime = DateTime.Now - new TimeSpan(1,0,0,0),
-                    Abdominal = "Abdominaleintrag",
-                    Cardiology = "Karidologieeintrag",
-                    Patient = db.Patients.Where(p => p.Name == "Wurst, Hans").First(),
-                });
-
-                db.SaveChanges();
             }
         }
     }

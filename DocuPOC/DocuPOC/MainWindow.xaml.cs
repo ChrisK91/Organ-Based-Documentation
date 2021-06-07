@@ -84,11 +84,11 @@ namespace DocuPOC
                 case AdmissionDetailViewModel:
                     var vm = sender as AdmissionDetailViewModel;
 
-                    if(vm.IsDirty)
+                    if (vm.IsDirty)
                     {
                         var result = await ConfirmCloseDialog.ShowAsync();
 
-                        if(result == ContentDialogResult.Primary)
+                        if (result == ContentDialogResult.Primary)
                         {
                             return;
                         }

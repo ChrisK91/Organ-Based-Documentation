@@ -1,9 +1,11 @@
 ﻿using DocuPOC.Models;
 using DotLiquid;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -13,6 +15,7 @@ namespace DocuPOC.Models
 {
 
     [LiquidType("*")]
+    [Index(nameof(AdmissionDateTime), nameof(DischargeDateTime))]
     public class Admission
     {
         public int AdmissionId { get; set; }
@@ -22,7 +25,8 @@ namespace DocuPOC.Models
         public DateTime AdmissionDateTime { get; set; }
         public DateTime? DischargeDateTime { get; set; }
 
-        public string Diagnosis { get; set; }
+        public ICollection<VersionedStringEntry> Diagnosis { get; set; }
+
         public string Neurologic { get; set; }
         public string Pulmonal { get; set; }
         public string Cardiology { get; set; }
@@ -40,6 +44,14 @@ namespace DocuPOC.Models
             get
             {
                 return AdmissionDateTime.DaysDifference();
+            }
+        }
+
+        internal void SetDiagnosis(string diagnosis)
+        {
+            if(!String.Equals(this.Diagnosis.GetLastVersionedEntry(), diagnosis))
+            {
+                this.Diagnosis.Add(new VersionedStringEntry(diagnosis));
             }
         }
     }

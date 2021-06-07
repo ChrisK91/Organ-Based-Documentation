@@ -56,7 +56,7 @@ namespace DocuPOC.ViewModels
         {
             admission = a;
 
-            Diagnosis = a.Diagnosis;
+            Diagnosis = a.Diagnosis.GetLastVersionedEntry();
 
             if (a.DischargeDateTime is DateTime && a.DischargeDateTime?.Year <= 1) // TODO: convert to try-catch
             {
@@ -70,7 +70,7 @@ namespace DocuPOC.ViewModels
             AdmissionDate = a.AdmissionDateTime;
 
             PatientNotes = admission.Patient.Notes;
-            Diagnosis = admission.Diagnosis;
+            Diagnosis = admission.Diagnosis.GetLastVersionedEntry();
             AdmissionDate = admission.AdmissionDateTime;
             Pulmonal = admission.Pulmonal;
             Abdominal = admission.Abdominal;

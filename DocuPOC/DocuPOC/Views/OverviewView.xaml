@@ -7,9 +7,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Storyboard x:Name="RotateRefreshIcon">
+            <DoubleAnimation Storyboard.TargetName="RefreshIconTransform"
+                       Storyboard.TargetProperty="Angle"
+                       From="0" To="360" x:Name="RotationAnimation" />
+        </Storyboard>
+    </UserControl.Resources>
+
     <Grid x:Name="Frame">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -85,6 +94,20 @@
                 </StackPanel>
             </Button>
 
+            <Button HorizontalAlignment="Right" ToolTipService.ToolTip="F5" Command="{Binding RefreshData}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F5" />
+                </Button.KeyboardAccelerators>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" Margin="4" RenderTransformOrigin="0.5, 0.5">
+                        <SymbolIcon.RenderTransform>
+                            <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="RefreshIconTransform" Angle="0" />
+                        </SymbolIcon.RenderTransform>
+                    </SymbolIcon>
+                    <TextBlock VerticalAlignment="Center">Aktualisieren</TextBlock>
+                </StackPanel>
+            </Button>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" controls:DockPanel.Dock="Right">
                 <StackPanel.Resources>
                     <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
@@ -97,5 +120,8 @@
                 <FontIcon Margin="3" Glyph="&#xE946;" ToolTipService.ToolTip="{Binding DatabaseLocation}" />
             </StackPanel>
         </controls:DockPanel>
+
+
+        <ProgressBar Grid.Row="2" Value="{Binding ProgressTime}" Maximum="{Binding RefreshInterval}" Minimum="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2" />
     </Grid>
 </UserControl>

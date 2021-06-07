@@ -8,6 +8,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,14 @@ namespace DocuPOC.ViewModels
 
         public IRelayCommand PrintOverview { get; set; }
         public IRelayCommand OpenHistoryTab { get; set; }
+        public IRelayCommand RefreshData { get; set; }
+
+        DispatcherTimer refreshTimer;
+
+        private int progressTime = 0;
+        public int ProgressTime { get => progressTime; set => SetProperty(ref progressTime, value); }
+
+        public int RefreshInterval { get => 60; } // TODO: make configurable
 
         public OverviewViewModel()
         {
@@ -74,6 +83,11 @@ namespace DocuPOC.ViewModels
             OpenHistoryTab = new RelayCommand(() =>
             {
                 WeakReferenceMessenger.Default.Send(new OpenPatientArchiveMessage());
+            });
+
+            RefreshData = new RelayCommand(() =>
+            {
+                LoadData();
             });
 
             LoadData();
@@ -97,20 +111,39 @@ namespace DocuPOC.ViewModels
                     WeakReferenceMessenger.Default.Send(new OpenAdmissionDetailsMessage(m.Value));
                 }
             });
+
+            refreshTimer = new DispatcherTimer();
+            refreshTimer.Interval = new TimeSpan(0, 0, 1);
+            refreshTimer.Tick += RefreshTimer_Tick;
+            refreshTimer.Start();
+        }
+
+        private void RefreshTimer_Tick(object sender, object e)
+        {
+            ProgressTime++;
+            if (ProgressTime == RefreshInterval)
+            {
+                LoadData();
+            }
         }
 
         private void LoadData()
         {
+            WeakReferenceMessenger.Default.Send(new DisplayLoadingIndicator(null));
             Rooms.Clear();
             AdmissionsWithoutRooms.Clear();
 
             var db = new DataContext();
-            db.Rooms
+            db.Rooms.OrderBy(r => r.RoomId)
                 .Include(r => r.Admissions.Where(a => a.DischargeDateTime == null)) // select Admission without a discharge date
                 .ThenInclude(a => a.Patient)
+                .ThenInclude(r => r.Admissions)
+                .ThenIncludeVersionedProperties()
                 .ForEachAsync(r => Rooms.Add(new RoomViewViewModel(r)));
 
-            db.Admissions.Where(a => a.Room == null && a.DischargeDateTime == null).Include(a => a.Patient).ForEachAsync(a => AdmissionsWithoutRooms.Add(new AdmissionViewModel(a)));
+            db.Admissions.Where(a => a.Room == null && a.DischargeDateTime == null).IncludeVersionedProperties().Include(a => a.Patient).ForEachAsync(a => AdmissionsWithoutRooms.Add(new AdmissionViewModel(a)));
+
+            ProgressTime = 0;
         }
     }
 }
