@@ -1,4 +1,5 @@
 ﻿using DocuPOC.Models;
+using DocuPOC.ViewModels;
 using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml;
 using System;
@@ -17,6 +18,11 @@ namespace DocuPOC.Messages
     public class PrintOverview : ValueChangedMessage<List<Room>>
     {
         public PrintOverview(List<Room> value) : base(value) { }
+    }
+
+    public class ShowHistory : ValueChangedMessage<AdmissionDetailViewModel>
+    {
+        public ShowHistory(AdmissionDetailViewModel value) : base(value) { }
     }
 
     public class DisplayLoadingIndicator : ValueChangedMessage<object>

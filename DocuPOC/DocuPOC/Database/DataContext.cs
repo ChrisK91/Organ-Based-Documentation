@@ -25,7 +25,7 @@ namespace DocuPOC.Database
 
             options.UseSqlite(builder.ToString(), o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 
-#if true
+#if false
             options.LogTo(m => Debugger.Log(0, null, m + "\r\n"), LogLevel.Information);
 #endif
         }

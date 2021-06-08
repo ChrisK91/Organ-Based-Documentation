@@ -42,10 +42,21 @@
                         <TextBlock.ContextFlyout>
                             <Flyout>
                                 <CalendarDatePicker Date="{Binding AdmissionDate, Mode=TwoWay}" />
-                            </Flyout> 
+                            </Flyout>
                         </TextBlock.ContextFlyout>
                     </TextBlock>
                 </StackPanel>
+
+                <Button HorizontalAlignment="Right" Command="{Binding ShowHistory}" ToolTipService.ToolTip="Strg + H" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="H" Modifiers="Control" />
+                    </Button.KeyboardAccelerators>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Clock" Margin="4" />
+                        <TextBlock VerticalAlignment="Center">Änderungen</TextBlock>
+                    </StackPanel>
+                </Button>
+
 
                 <Button HorizontalAlignment="Right" Command="{Binding PrintAdmission}" ToolTipService.ToolTip="Strg + P" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
                     <Button.KeyboardAccelerators>
@@ -116,6 +127,5 @@
                 </Grid>
             </Grid>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

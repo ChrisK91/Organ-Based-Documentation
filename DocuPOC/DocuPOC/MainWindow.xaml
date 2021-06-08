@@ -86,6 +86,10 @@
 
         <ContentDialog x:Name="ConfirmCloseDialog" Title="Änderungen verwerfen?" PrimaryButtonText="Abbrechen" SecondaryButtonText="Verwerfen">
             <TextBlock>Das Tab enthält ungespeicherte Änderungen. Sollen die Änderungen verworfen werden?</TextBlock>
-        </ContentDialog> 
+        </ContentDialog>
+
+        <ContentDialog x:Name="ShowHistoryDialog" Title="Verlauf" PrimaryButtonText="Schließen" FullSizeDesired="True" MinWidth="800">
+            <views:ShowHistoryView DataContext="{Binding}" />
+        </ContentDialog>
     </Grid>
 </Window>

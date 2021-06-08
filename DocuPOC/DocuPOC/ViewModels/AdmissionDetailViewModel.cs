@@ -19,6 +19,8 @@ namespace DocuPOC.ViewModels
         public bool CanClose { get => true; }
         public bool CanDrag { get => true; }
 
+        public int PatientId { get; private set; }
+
         public Microsoft.UI.Xaml.Controls.Symbol Symbol { get => Microsoft.UI.Xaml.Controls.Symbol.Contact; }
 
         private int patientAgeInYears;
@@ -87,10 +89,12 @@ namespace DocuPOC.ViewModels
         public IRelayCommand SaveChanges { get; set; }
 
         public IRelayCommand PrintAdmission { get; set; }
+        public IRelayCommand ShowHistory { get; set; }
 
         public AdmissionDetailViewModel(Admission admission)
         {
             this.admission = admission;
+            PatientId = admission.Patient.PatientId;
             PatientName = admission.Patient.Name;
             PatientAgeInYears = admission.Patient.AgeInYears;
             AdmissionTimeInDays = admission.AdmissionTimeInDays;
@@ -111,6 +115,7 @@ namespace DocuPOC.ViewModels
 
             SaveChanges = new RelayCommand(SavePatientChanges);
             PrintAdmission = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new PrintAdmissionMessage(this.admission)); });
+            ShowHistory = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new ShowHistory(this)); });
         }
 
         private void MarkDirty(object sender, System.ComponentModel.PropertyChangedEventArgs e)

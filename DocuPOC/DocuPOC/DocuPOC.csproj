@@ -17,6 +17,7 @@
     <None Remove="Views\OverviewView.xaml" />
     <None Remove="Views\PatientArchiveView.xaml" />
     <None Remove="Views\RoomView.xaml" />
+    <None Remove="Views\ShowHistoryView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\OverviewTemplate.html">
@@ -40,6 +41,12 @@
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\ShowHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

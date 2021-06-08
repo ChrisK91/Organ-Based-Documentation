@@ -3,8 +3,10 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DocuPOC.ViewModels
 {
@@ -81,15 +83,19 @@ namespace DocuPOC.ViewModels
 
             if (!String.IsNullOrEmpty(SearchName))
             {
-                patients = patients.Where(p => p.Name.Contains(SearchName));
+                patients = patients.Where(p => EF.Functions.Like(p.Name, SearchName + "%"));
             }
 
-            if(SearchBirthday != null)
+            if (SearchBirthday != null)
             {
                 patients = patients.Where(p => p.Birthday.Date == SearchBirthday.Value.Date);
             }
 
-            await patients.Include(p => p.Admissions).ForEachAsync(p => PatientList.Add(new PatientDataListEntryWithAdmissionDetails(p)));
+            var tmpList = new List<PatientDataListEntryWithAdmissionDetails>();
+
+            await Task.Run(async () => { await patients.Include(p => p.Admissions).ForEachAsync(p => tmpList.Add(new PatientDataListEntryWithAdmissionDetails(p))); });
+
+            PatientList = new ObservableCollection<PatientDataListEntryWithAdmissionDetails>(tmpList);
 
             SelectedAdmission = null;
             SelectedPatient = null;
@@ -103,12 +109,17 @@ namespace DocuPOC.ViewModels
             PatientList.Clear();
 
             var db = new Database.DataContext();
-            var patients = await db.Patients.OrderByDescending(p => p.PatientId).Take(50).Include(p => p.Admissions).ToListAsync();
+            var tmpList = new List<PatientDataListEntryWithAdmissionDetails>();
 
-            foreach (var p in patients)
+            await Task.Run(async () =>
             {
-                PatientList.Add(new PatientDataListEntryWithAdmissionDetails(p));
-            }
+                await db.Patients.OrderByDescending(p => p.PatientId).Take(50).Include(p => p.Admissions).ForEachAsync(p =>
+            {
+                tmpList.Add(new PatientDataListEntryWithAdmissionDetails(p));
+            });
+            });
+
+            PatientList = new ObservableCollection<PatientDataListEntryWithAdmissionDetails>(tmpList);
 
             SelectedPatient = null;
             SelectedAdmission = null;

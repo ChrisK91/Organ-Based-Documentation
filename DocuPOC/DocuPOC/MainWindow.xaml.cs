@@ -67,6 +67,12 @@ namespace DocuPOC
                 PrintDialog.Hide();
                 await PrintDialog.ShowAsync();
             });
+
+            WeakReferenceMessenger.Default.Register<ShowHistory>(this, async (r, m) =>
+            {
+                ShowHistoryDialog.DataContext = new ShowHistoryViewModel(m.Value);
+                await ShowHistoryDialog.ShowAsync();
+            });
         }
 
         private void TabViewItem_CloseRequested(TabViewItem sender, TabViewTabCloseRequestedEventArgs args)
