@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using DocuPOC.Database;
 using DocuPOC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -34,34 +35,13 @@ namespace DocuPOC
 
                 db.SaveChanges();
 
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(70 * 365, 0, 0, 0),
-                    Name = "Mustermann, Max",
-                    Notes = "Allergie!"
-                });
-
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(100 * 365, 0, 0, 0),
-                    Name = "Mustermann, Margarete"
-                });
-
-                db.Patients.Add(new Patient()
-                {
-                    Birthday = DateTime.Now - new TimeSpan(20 * 365, 0, 0, 0),
-                    Name = "Wurst, Hans",
-                    Notes = "Einbettzimmer"
-                });
-
-
                 int t = 0;
                 int max = 5000;
                 for (int n = 0; n < max; n++)
                 {
                     t++;
 
-                    if(t % 100 == 0)
+                    if (t % 1000 == 0)
                     {
                         Debug.WriteLine(String.Format("Iteration {0} out of {1}, commiting changes", t, max));
                         db.SaveChanges();
@@ -78,62 +58,75 @@ namespace DocuPOC
                     {
                         var admissionDate = fakerDate.Past(100);
                         var discharge = admissionDate + TimeSpan.FromDays(faker.Random.Double(1, 50));
-                        var diagnosis = new List<VersionedStringEntry>();
-
-                        for (int d = 0; d < faker.Random.Number(1, 50); d++)
-                        {
-                            diagnosis.Add(new VersionedStringEntry(fakerLorem.Sentence(3, 10), fakerDate.Past(100)));
-                        }
 
                         var adm = db.Admissions.Add(new Admission()
                         {
                             Patient = p.Entity,
                             AdmissionDateTime = admissionDate,
-                            DischargeDateTime = discharge,
-                            Diagnosis = diagnosis
+                            DischargeDateTime = discharge
                         });
+
+                        for (int d = 0; d < faker.Random.Number(1, 50); d++)
+                        {
+                            db.UpdateDiagnosis(adm.Entity, fakerLorem.Sentence(3, 10), fakerDate.Past(100));
+                        }
+
                     }
                 }
 
                 db.SaveChanges();
 
-                var DiagnosisList = new List<EntityEntry<VersionedStringEntry>>();
-                DiagnosisList.Add(db.VersionedStringEntries.Add(new VersionedStringEntry("Testeintrag")));
-                DiagnosisList.Add(db.VersionedStringEntries.Add(new VersionedStringEntry("Testeintrag 2")));
-                DiagnosisList.Add(db.VersionedStringEntries.Add(new VersionedStringEntry("Testdiagnose 1, **Fett**")));
-
-                db.Admissions.Add(new Admission()
+                var maxMustermann = db.Patients.Add(new Patient()
                 {
-                    AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
-                    Patient = db.Patients.Where(p => p.Name == "Mustermann, Max").First(),
-                    Room = db.Rooms.Where(r => r.Name == "100").First()
+                    Birthday = DateTime.Now - new TimeSpan(70 * 365, 0, 0, 0),
+                    Name = "Mustermann, Max",
+                    Notes = "Allergie!"
+                });
+
+                var maggy = db.Patients.Add(new Patient()
+                {
+                    Birthday = DateTime.Now - new TimeSpan(100 * 365, 0, 0, 0),
+                    Name = "Mustermann, Margarete"
+                });
+
+                var hans = db.Patients.Add(new Patient()
+                {
+                    Birthday = DateTime.Now - new TimeSpan(20 * 365, 0, 0, 0),
+                    Name = "Wurst, Hans",
+                    Notes = "Einbettzimmer"
                 });
 
 
-                db.Admissions.Add(new Admission()
+                var pat = db.Admissions.Add(new Admission()
                 {
                     AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
-                    Patient = db.Patients.Where(p => p.Name == "Mustermann, Margarete").First(),
+                    Patient = maxMustermann.Entity,
                     Room = db.Rooms.Where(r => r.Name == "100").First()
                 });
+                db.UpdateDiagnosis(pat.Entity, "Testeintrag");
 
-                db.Admissions.Add(new Admission()
+
+                pat = db.Admissions.Add(new Admission()
+                {
+                    AdmissionDateTime = DateTime.Now - new TimeSpan(5, 0, 0, 0),
+                    Patient = maggy.Entity,
+                    Room = db.Rooms.Where(r => r.Name == "100").First()
+                });
+                db.UpdateDiagnosis(pat.Entity, "Testeintrag 2");
+
+                pat = db.Admissions.Add(new Admission()
                 {
                     AdmissionDateTime = DateTime.Now - new TimeSpan(10, 0, 0, 0),
                     DischargeDateTime = DateTime.Now - new TimeSpan(1, 0, 0, 0),
                     Abdominal = "Abdominaleintrag",
                     Cardiology = "Karidologieeintrag",
-                    Patient = db.Patients.Where(p => p.Name == "Wurst, Hans").First(),
+                    Patient = hans.Entity,
                 });
+                db.UpdateDiagnosis(pat.Entity, "Testdiagnose 1, **Fett**");
+
+
                 db.SaveChanges();
 
-                int i = 0;
-                foreach (var a in db.Admissions.OrderByDescending(a => a.AdmissionId).Take(3).Include(a => a.Diagnosis))
-                {
-                    a.Diagnosis.Add(DiagnosisList[i].Entity);
-                    i++;
-                }
-                db.SaveChanges();
             }
         }
 
@@ -155,31 +148,6 @@ namespace DocuPOC
         public static int DaysDifference(this DateTimeOffset date)
         {
             return date.DateTime.DaysDifference();
-        }
-
-        public static string GetLastVersionedEntry(this IEnumerable<VersionedStringEntry> versionedStringEntries)
-        {
-            if(versionedStringEntries.Count() == 1)
-            {
-                return versionedStringEntries.First().Value;
-            } else if (versionedStringEntries.Count() == 0)
-            {
-                return null;
-            }
-
-            return versionedStringEntries.OrderByDescending(v => v.Timestamp).FirstOrDefault()?.Value; //TODO: Improve handling of empty collections
-        }
-
-        public static IIncludableQueryable<Admission, IEnumerable<VersionedStringEntry>> IncludeVersionedProperties(this IQueryable<Admission> admissions)
-        {
-           return admissions.Include(a => a.Diagnosis.OrderByDescending(v => v.Timestamp));
-        }
-
-
-
-        public static IIncludableQueryable<Room, IEnumerable<VersionedStringEntry>> ThenIncludeVersionedProperties(this IIncludableQueryable<Room, List<Admission>> admissions)
-        {
-            return admissions.ThenInclude(a => a.Diagnosis.OrderByDescending(v => v.Timestamp));
         }
     }
 }

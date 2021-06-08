@@ -146,7 +146,7 @@ namespace DocuPOC.ViewModels
 
             if (!String.IsNullOrWhiteSpace(SearchPatientData.Name))
             {
-                patients = patients.Where(p => EF.Functions.Like(SearchPatientData.Name, p.Name));
+                patients = patients.Where(p => p.Name.Contains(SearchPatientData.Name));
             }
 
             if (SearchPatientData.DateOfBirth != null)

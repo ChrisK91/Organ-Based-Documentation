@@ -118,7 +118,7 @@ namespace DocuPOC.ViewModels
         private void UpdateData()
         {
             var db = new Database.DataContext();
-            var admission = db.Admissions.Include(a => a.Patient).IncludeVersionedProperties().Where(a => a.AdmissionId == this.Admission.AdmissionId).First();
+            var admission = db.Admissions.Include(a => a.Patient).Where(a => a.AdmissionId == this.Admission.AdmissionId).First();
             SetDataByAdmission(admission);
         }
 
@@ -128,7 +128,7 @@ namespace DocuPOC.ViewModels
             PatientAgeInYears = admission.Patient.AgeInYears;
             AdmissionTimeInDays = admission.AdmissionTimeInDays;
             PatientNotes = admission.Patient.Notes;
-            Diagnosis = admission.Diagnosis.GetLastVersionedEntry();
+            Diagnosis = admission.Diagnosis;
         }
 
         private void MovePatient()

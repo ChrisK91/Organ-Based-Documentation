@@ -1,17 +1,9 @@
 ﻿using DocuPOC.Messages;
 using DocuPOC.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace DocuPOC.ViewModels
 {
@@ -103,7 +95,7 @@ namespace DocuPOC.ViewModels
             PatientAgeInYears = admission.Patient.AgeInYears;
             AdmissionTimeInDays = admission.AdmissionTimeInDays;
             PatientNotes = admission.Patient.Notes;
-            Diagnosis = admission.Diagnosis.GetLastVersionedEntry();
+            Diagnosis = admission.Diagnosis;
             PatientDob = admission.Patient.Birthday;
             AdmissionDate = admission.AdmissionDateTime;
             Pulmonal = admission.Pulmonal;
@@ -123,7 +115,7 @@ namespace DocuPOC.ViewModels
 
         private void MarkDirty(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case nameof(PatientName):
                 case nameof(PatientAgeInYears):
@@ -156,16 +148,19 @@ namespace DocuPOC.ViewModels
             patient.Birthday = PatientDob.DateTime;
 
             db.Attach(this.admission);
-            this.admission.SetDiagnosis(Diagnosis);
+
+            db.UpdateDiagnosis(this.admission, Diagnosis);
+            db.UpdatePulmonal(this.admission, Pulmonal);
+            db.UpdateAbdominal(this.admission, Abdominal);
+            db.UpdateCardiology(this.admission, Cardial);
+            db.UpdateRenal(this.admission, Renal);
+            db.UpdateNeurologic(this.admission, Neurology);
+            db.UpdateInfectiology(this.admission, Infectiology);
+            db.UpdateTodo(this.admission, ToDo);
+            db.UpdateProcedere(this.admission, Procedere);
+
             this.admission.AdmissionDateTime = AdmissionDate.DateTime;
-            this.admission.Pulmonal = Pulmonal;
-            this.admission.Abdominal = Abdominal;
-            this.admission.Cardiology = Cardial;
-            this.admission.Renal = Renal;
-            this.admission.Neurologic = Neurology;
-            this.admission.Infectiology = Infectiology;
-            this.admission.ToDo = ToDo;
-            this.admission.Procedere = Procedere;
+
 
             db.SaveChanges();
 

@@ -138,10 +138,9 @@ namespace DocuPOC.ViewModels
                 .Include(r => r.Admissions.Where(a => a.DischargeDateTime == null)) // select Admission without a discharge date
                 .ThenInclude(a => a.Patient)
                 .ThenInclude(r => r.Admissions)
-                .ThenIncludeVersionedProperties()
                 .ForEachAsync(r => Rooms.Add(new RoomViewViewModel(r)));
 
-            db.Admissions.Where(a => a.Room == null && a.DischargeDateTime == null).IncludeVersionedProperties().Include(a => a.Patient).ForEachAsync(a => AdmissionsWithoutRooms.Add(new AdmissionViewModel(a)));
+            db.Admissions.Where(a => a.Room == null && a.DischargeDateTime == null).Include(a => a.Patient).ForEachAsync(a => AdmissionsWithoutRooms.Add(new AdmissionViewModel(a)));
 
             ProgressTime = 0;
         }

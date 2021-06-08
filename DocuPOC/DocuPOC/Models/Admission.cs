@@ -25,16 +25,16 @@ namespace DocuPOC.Models
         public DateTime AdmissionDateTime { get; set; }
         public DateTime? DischargeDateTime { get; set; }
 
-        public ICollection<VersionedStringEntry> Diagnosis { get; set; }
+        public string Diagnosis { get; internal set; }
 
-        public string Neurologic { get; set; }
-        public string Pulmonal { get; set; }
-        public string Cardiology { get; set; }
-        public string Renal { get; set; }
-        public string Abdominal { get; set; }
-        public string Infectiology { get; set; }
-        public string ToDo { get; set; }
-        public string Procedere { get; set; }
+        public string Neurologic { get; internal set; }
+        public string Pulmonal { get; internal set; }
+        public string Cardiology { get; internal set; }
+        public string Renal { get; internal set; }
+        public string Abdominal { get; internal set; }
+        public string Infectiology { get; internal set; }
+        public string ToDo { get; internal set; }
+        public string Procedere { get; internal set; }
 
         public int? RoomId { get; set; }
         public Room Room { get; set; }
@@ -44,14 +44,6 @@ namespace DocuPOC.Models
             get
             {
                 return AdmissionDateTime.DaysDifference();
-            }
-        }
-
-        internal void SetDiagnosis(string diagnosis)
-        {
-            if(!String.Equals(this.Diagnosis.GetLastVersionedEntry(), diagnosis))
-            {
-                this.Diagnosis.Add(new VersionedStringEntry(diagnosis));
             }
         }
     }
