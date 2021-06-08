@@ -19,7 +19,8 @@ namespace DocuPOC.Models
         Abdominal = 6,
         Infectiology = 7,
         ToDo = 8,
-        Procedere = 9
+        Procedere = 9,
+        Notes = 10
     }
 
     [Index(nameof(VersionedStringEntryId), nameof(Timestamp), nameof(EntryType))]

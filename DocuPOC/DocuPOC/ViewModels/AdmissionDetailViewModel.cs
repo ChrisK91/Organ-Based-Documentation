@@ -144,7 +144,7 @@ namespace DocuPOC.ViewModels
 
             var db = new Database.DataContext();
             db.Attach(patient);
-            patient.Notes = PatientNotes;
+            db.UpdateNotes(patient, PatientNotes);
             patient.Birthday = PatientDob.DateTime;
 
             db.Attach(this.admission);

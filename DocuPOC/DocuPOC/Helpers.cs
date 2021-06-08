@@ -79,9 +79,9 @@ namespace DocuPOC
                 var maxMustermann = db.Patients.Add(new Patient()
                 {
                     Birthday = DateTime.Now - new TimeSpan(70 * 365, 0, 0, 0),
-                    Name = "Mustermann, Max",
-                    Notes = "Allergie!"
+                    Name = "Mustermann, Max"
                 });
+                db.UpdateNotes(maxMustermann.Entity, "Allergie!");
 
                 var maggy = db.Patients.Add(new Patient()
                 {
@@ -92,9 +92,10 @@ namespace DocuPOC
                 var hans = db.Patients.Add(new Patient()
                 {
                     Birthday = DateTime.Now - new TimeSpan(20 * 365, 0, 0, 0),
-                    Name = "Wurst, Hans",
-                    Notes = "Einbettzimmer"
+                    Name = "Wurst, Hans"
                 });
+
+                db.UpdateNotes(hans.Entity, "Einbettzimmer");
 
 
                 var pat = db.Admissions.Add(new Admission()
@@ -118,11 +119,11 @@ namespace DocuPOC
                 {
                     AdmissionDateTime = DateTime.Now - new TimeSpan(10, 0, 0, 0),
                     DischargeDateTime = DateTime.Now - new TimeSpan(1, 0, 0, 0),
-                    Abdominal = "Abdominaleintrag",
-                    Cardiology = "Karidologieeintrag",
                     Patient = hans.Entity,
                 });
                 db.UpdateDiagnosis(pat.Entity, "Testdiagnose 1, **Fett**");
+                db.UpdateAbdominal(pat.Entity, "Abdominaleintrag");
+                db.UpdateCardiology(pat.Entity, "Kardiologieeintrag");
 
 
                 db.SaveChanges();

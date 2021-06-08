@@ -4,6 +4,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.UI.Xaml.Automation.Peers;
 using System;
 using System.Diagnostics;
 
@@ -74,6 +75,11 @@ namespace DocuPOC.Database
             updateGenericProperty(newDiagnosis, EntryType.Procedere, admission, null, timestamp);
         }
 
+        public void UpdateNotes(Patient patient, string newDiagnosis, DateTime? timestamp = null)
+        {
+            updateGenericProperty(newDiagnosis, EntryType.Notes, null, patient, timestamp);
+        }
+
         private void updateGenericProperty(string newValue, EntryType target, Admission admission = null, Patient patient = null, DateTime? timestamp = null)
         {
             string oldValue = null;
@@ -115,6 +121,10 @@ namespace DocuPOC.Database
                 case EntryType.ToDo:
                     oldValue = admission.ToDo;
                     admission.ToDo = newValue;
+                    break;
+                case EntryType.Notes:
+                    oldValue = patient.Notes;
+                    patient.Notes = newValue;
                     break;
 
                 default:

@@ -17,7 +17,7 @@ namespace DocuPOC.Models
         public int PatientId { get; set; }
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
-        public string Notes { get; set; }
+        public string Notes { get; internal set; }
         public List<Admission> Admissions { get; set; }
 
         public string FormattedBirthday
