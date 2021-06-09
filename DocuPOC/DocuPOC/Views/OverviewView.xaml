@@ -11,7 +11,11 @@
         <Storyboard x:Name="RotateRefreshIcon">
             <DoubleAnimation Storyboard.TargetName="RefreshIconTransform"
                        Storyboard.TargetProperty="Angle"
-                       From="0" To="360" x:Name="RotationAnimation" />
+                       From="0" To="360" x:Name="RotationAnimation"  Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase  EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
 
@@ -31,10 +35,23 @@
                 <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="4" VerticalAlignment="Center">Belegungsübersicht</TextBlock>
             </CommandBar.Content>
 
-            <AppBarButton Icon="Print" Label="Übersicht drucken" Command="{Binding PrintOverview}" />
-            <AppBarButton Icon="Find" Label="Patient suchen" Command="{Binding OpenHistoryTab}" />
+            <AppBarButton Icon="Print" Label="Übersicht drucken" Command="{Binding PrintOverview}" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="P" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            
+            <AppBarButton Icon="Find" Label="Patient suchen" Command="{Binding OpenHistoryTab}">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="S" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            
             <AppBarSeparator />
             <AppBarButton Label="Aktualisieren" Command="{Binding RefreshData}">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F5" />
+                </AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" RenderTransformOrigin="0.5, 0.5">
                         <SymbolIcon.RenderTransform>
@@ -43,6 +60,7 @@
                     </SymbolIcon>
                 </AppBarButton.Icon>
             </AppBarButton>
+            
             <AppBarSeparator />
             <AppBarToggleButton Icon="NewWindow" IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Label="Aufnahmen sofort öffnen" />
             <AppBarElementContainer>

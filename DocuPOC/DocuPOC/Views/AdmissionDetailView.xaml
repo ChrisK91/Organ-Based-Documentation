@@ -18,67 +18,51 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Padding="5" Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Text="{Binding PatientName}" />
-
-                <TextBlock VerticalAlignment="Bottom" Text="{Binding PatientDob, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d}'}" FontWeight="ExtraLight" FontSize="18">
-                    <TextBlock.ContextFlyout>
-                        <Flyout>
-                            <CalendarDatePicker Date="{Binding PatientDob, Mode=TwoWay}" />
-                        </Flyout>
-                    </TextBlock.ContextFlyout>
-                </TextBlock>
-            </StackPanel>
-
-            <controls:DockPanel HorizontalAlignment="Stretch">
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right">
+            <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Light" HorizontalAlignment="Left" controls:DockPanel.Dock="Left" VerticalAlignment="Center">
-                        <Run Text="{Binding PatientAgeInYears}" /> Jahre, <Run Text="{Binding AdmissionTimeInDays}" /> Tage Aufenthalt
-                    </TextBlock>
-
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Light" HorizontalAlignment="Left" controls:DockPanel.Dock="Left" VerticalAlignment="Center">
-                        <Run Text="{Binding AdmissionDate, Converter={StaticResource StringFormatConverter}, ConverterParameter=', Aufnahme am {0:d}'}" />
-                        <TextBlock.ContextFlyout>
-                            <Flyout>
-                                <CalendarDatePicker Date="{Binding AdmissionDate, Mode=TwoWay}" />
-                            </Flyout>
-                        </TextBlock.ContextFlyout>
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="4" VerticalAlignment="Center" Text="{Binding PatientName}" />
                 </StackPanel>
+            </CommandBar.Content>
 
-                <Button HorizontalAlignment="Right" Command="{Binding ShowHistory}" ToolTipService.ToolTip="Strg + H" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
-                    <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="H" Modifiers="Control" />
-                    </Button.KeyboardAccelerators>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Clock" Margin="4" />
-                        <TextBlock VerticalAlignment="Center">Änderungen</TextBlock>
-                    </StackPanel>
-                </Button>
+            <AppBarButton Label="{Binding PatientAgeInYears, Mode=TwoWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} Jahre'}" Icon="OutlineStar">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <CalendarDatePicker Date="{Binding PatientDob, Mode=TwoWay}" />
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
 
+            <AppBarButton Label="{Binding AdmissionTimeInDays, Mode=TwoWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} Tage Aufenthalt'}" Icon="CalendarDay">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <CalendarDatePicker Date="{Binding AdmissionDate, Mode=TwoWay}" />
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
 
-                <Button HorizontalAlignment="Right" Command="{Binding PrintAdmission}" ToolTipService.ToolTip="Strg + P" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
-                    <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="P" Modifiers="Control" />
-                    </Button.KeyboardAccelerators>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Print" Margin="4" />
-                        <TextBlock VerticalAlignment="Center">Drucken</TextBlock>
-                    </StackPanel>
-                </Button>
+            <AppBarSeparator />
 
-                <Button HorizontalAlignment="Right" ToolTipService.ToolTip="Strg + S" Command="{Binding SaveChanges}" controls:DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2">
-                    <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="S" Modifiers="Control" />
-                    </Button.KeyboardAccelerators>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Save" Margin="4" />
-                        <TextBlock VerticalAlignment="Center">Speichern</TextBlock>
-                    </StackPanel>
-                </Button>
-            </controls:DockPanel>
-        </StackPanel>
+            <AppBarButton Icon="Save" Label="Speichern" Command="{Binding SaveChanges}" AccessKey="S" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="S" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+            <AppBarButton Icon="Print" Label="Drucken" Command="{Binding PrintAdmission}" AccessKey="P" >
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="P" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarSeparator />
+
+            <AppBarButton Icon="Clock" Label="Änderungen" Command="{Binding ShowHistory}" AccessKey="H">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="H" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
+
+        </CommandBar>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -92,7 +76,7 @@
                     <RowDefinition Height="0.4*" />
                     <RowDefinition Height="0.6*" />
                 </Grid.RowDefinitions>
-                <TextBox Margin="4,2" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding PatientNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Notizen:" />
+                <TextBox Margin="4,2" Grid.Row="0" Text="{Binding PatientNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Notizen:" />
                 <TextBox Margin="4,2" Grid.Row="1" Text="{Binding Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Diagnosen:" />
             </Grid>
 
@@ -106,14 +90,14 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBox Margin="2" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Neurology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Neurologie:"  MinWidth="250" MinHeight="150" />
-                <TextBox Margin="2" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Renal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Renal:" MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="0" Grid.Column="0" Text="{Binding Neurology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Neurologie:"  MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="0" Grid.Column="1" Text="{Binding Renal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Renal:" MinWidth="250" MinHeight="150" />
 
-                <TextBox Margin="2" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Pulmonal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Pulmonal:" MinWidth="250" MinHeight="150" />
-                <TextBox Margin="2" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Abdominal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Abdominell:" MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="1" Grid.Column="0" Text="{Binding Pulmonal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Pulmonal:" MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Text="{Binding Abdominal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Abdominell:" MinWidth="250" MinHeight="150" />
 
-                <TextBox Margin="2" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Cardial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Kardial:" MinWidth="250" MinHeight="150" />
-                <TextBox Margin="2" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding Infectiology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Infektiologie:" MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="2" Grid.Column="0" Text="{Binding Cardial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Kardial:" MinWidth="250" MinHeight="150" />
+                <TextBox Margin="2" Grid.Row="2" Grid.Column="1" Text="{Binding Infectiology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" PlaceholderText="keine Notizen" Header="Infektiologie:" MinWidth="250" MinHeight="150" />
             </Grid>
 
             <Grid Grid.Column="2">
