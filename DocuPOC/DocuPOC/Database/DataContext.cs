@@ -27,6 +27,7 @@ namespace DocuPOC.Database
 
 #if false
             options.LogTo(m => Debugger.Log(0, null, m + "\r\n"), LogLevel.Information);
+            options.EnableSensitiveDataLogging();
 #endif
         }
 

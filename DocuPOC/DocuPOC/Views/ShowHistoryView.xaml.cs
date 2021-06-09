@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using DocuPOC.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -27,6 +29,26 @@ namespace DocuPOC.Views
 
         private void DataGrid_Sorting(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridColumnEventArgs e)
         {
+            if (e.Column.Tag.ToString() == "Date")
+            {
+                //Implement sort on the column "Date" using LINQ
+                if (this.DataContext is ShowHistoryViewModel)
+                {
+                    var ctx = this.DataContext as ShowHistoryViewModel;
+
+                    if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                    {
+                        ctx.SortDescending();
+                        e.Column.SortDirection = DataGridSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        ctx.SortAscending();
+                        e.Column.SortDirection = DataGridSortDirection.Descending;
+                    }
+                }
+
+            }
         }
     }
 }

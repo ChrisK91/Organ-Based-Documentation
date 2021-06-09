@@ -14,7 +14,8 @@ namespace DocuPOC.Models
 {
 
     [LiquidType("*")]
-    [Index(nameof(AdmissionDateTime), nameof(DischargeDateTime))]
+    [Index(nameof(AdmissionDateTime))]
+    [Index(nameof(DischargeDateTime))]
     public class Admission
     {
         public int AdmissionId { get; set; }

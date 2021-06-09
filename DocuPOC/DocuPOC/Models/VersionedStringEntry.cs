@@ -23,7 +23,9 @@ namespace DocuPOC.Models
         Notes = 10
     }
 
-    [Index(nameof(VersionedStringEntryId), nameof(Timestamp), nameof(EntryType))]
+    [Index(nameof(VersionedStringEntryId))]
+    [Index(nameof(Timestamp))]
+    [Index(nameof(EntryType))]
     public class VersionedStringEntry
     {
         [Key]

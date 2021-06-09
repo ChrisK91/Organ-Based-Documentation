@@ -12,20 +12,53 @@
             <converters:StringFormatConverter x:Key="StringFormatConverter" />
 
             <DataTemplate x:Name="TextEntryDetails" x:DataType="viewmodels:ShowHistoryListEntry">
-                <TextBlock Margin="5" Text="{Binding Value}" />
+                <Grid>
+                    <TextBlock Margin="5" Text="{Binding Value}" />
+                </Grid>
             </DataTemplate>
         </Grid.Resources>
 
-        <controls:DataGrid ItemsSource="{Binding TextEntries}" Sorting="DataGrid_Sorting" AutoGenerateColumns="False" MinWidth="800" IsReadOnly="True" SelectionMode="Single" RowDetailsVisibilityMode="VisibleWhenSelected" RowDetailsTemplate="{StaticResource TextEntryDetails}" AlternatingRowBackground="#33000000" RowBackground="#33ffffff" GridLinesVisibility="Horizontal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <controls:DataGrid Grid.Row="1" ItemsSource="{Binding TextEntries}" Sorting="DataGrid_Sorting" AutoGenerateColumns="False" MinWidth="800" IsReadOnly="True" SelectionMode="Single" RowDetailsVisibilityMode="VisibleWhenSelected" RowDetailsTemplate="{StaticResource TextEntryDetails}" AlternatingRowBackground="#33000000" RowBackground="#33ffffff" GridLinesVisibility="Horizontal">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Datum" Tag="Date" Binding="{Binding Timestamp, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{d t}'}" CanUserSort="True" Width="250" />
                 <controls:DataGridTextColumn Header="Typ" Tag="Type" Binding="{Binding EntryType}" Width="250" CanUserSort="True" />
             </controls:DataGrid.Columns>
-
         </controls:DataGrid>
 
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right" OverflowButtonVisibility="Collapsed">
+            <CommandBar.Content>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="4" VerticalAlignment="Center">Änderungen</TextBlock>
+            </CommandBar.Content>
+            <AppBarToggleButton Icon="ViewAll" IsChecked="{Binding ShowAllAdmissions, Mode=TwoWay}" Label="Alle Aufenthalte" />
+            <AppBarButton Icon="Refresh" Command="{Binding RefreshData}" Label="Aktualisieren" />
+            <AppBarButton Icon="Filter" Label="Filter">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowNotes, Mode=TwoWay}">Notizen</ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowDiagnosis, Mode=TwoWay}">Diagnosen</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowNeurology, Mode=TwoWay}">Neurologie</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowPulmonal, Mode=TwoWay}">Pulmonal</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowCardiology, Mode=TwoWay}">Kardial</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowRenal, Mode=TwoWay}">Renal</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowAbdominal, Mode=TwoWay}">Abdominell</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowInfectiology, Mode=TwoWay}">Infektiologie</ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowToDo, Mode=TwoWay}">ToDo</ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem IsChecked="{Binding ShowProcedere, Mode=TwoWay}">Prozedere</ToggleMenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="clearFilter" Command="{Binding ResetFilters}" Text="Filter zurücksetzen" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </CommandBar>
 
-        <controls:Loading IsLoading="{Binding Loading}">
+        <controls:Loading IsLoading="{Binding Loading}" Grid.RowSpan="2" Grid.Row="0">
             <controls:Loading.Background>
                 <brushes:AcrylicBrush BackgroundSource="Backdrop"
                               TintColor="Black"
