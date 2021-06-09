@@ -1,5 +1,5 @@
-﻿using DocuPOC.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DocuPOC.Models;
 using System;
 
 namespace DocuPOC.ViewModels

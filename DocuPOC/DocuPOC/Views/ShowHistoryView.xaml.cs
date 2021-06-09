@@ -24,5 +24,9 @@ namespace DocuPOC.Views
         {
             this.InitializeComponent();
         }
+
+        private void DataGrid_Sorting(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridColumnEventArgs e)
+        {
+        }
     }
 }

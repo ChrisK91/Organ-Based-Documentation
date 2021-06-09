@@ -10,13 +10,16 @@
     <Grid>
         <Grid.Resources>
             <converters:StringFormatConverter x:Key="StringFormatConverter" />
+
+            <DataTemplate x:Name="TextEntryDetails" x:DataType="viewmodels:ShowHistoryListEntry">
+                <TextBlock Margin="5" Text="{Binding Value}" />
+            </DataTemplate>
         </Grid.Resources>
 
-        <controls:DataGrid ItemsSource="{Binding TextEntries}" AutoGenerateColumns="False" MinWidth="800" IsReadOnly="True">
+        <controls:DataGrid ItemsSource="{Binding TextEntries}" Sorting="DataGrid_Sorting" AutoGenerateColumns="False" MinWidth="800" IsReadOnly="True" SelectionMode="Single" RowDetailsVisibilityMode="VisibleWhenSelected" RowDetailsTemplate="{StaticResource TextEntryDetails}" AlternatingRowBackground="#33000000" RowBackground="#33ffffff" GridLinesVisibility="Horizontal">
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Datum" Binding="{Binding Timestamp, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{d t}'}" CanUserSort="True" Width="250" />
-                <controls:DataGridTextColumn Header="Typ" Binding="{Binding EntryType}" Width="70" />
-                <controls:DataGridTextColumn Header="Eintrag" Binding="{Binding Value}" MinWidth="600" />
+                <controls:DataGridTextColumn Header="Datum" Tag="Date" Binding="{Binding Timestamp, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{d t}'}" CanUserSort="True" Width="250" />
+                <controls:DataGridTextColumn Header="Typ" Tag="Type" Binding="{Binding EntryType}" Width="250" CanUserSort="True" />
             </controls:DataGrid.Columns>
 
         </controls:DataGrid>

@@ -1,9 +1,9 @@
-﻿using DocuPOC.Models;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using DocuPOC.Models;
 using DocuPOC.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml.Automation.Peers;
 using System;
 using System.Diagnostics;
