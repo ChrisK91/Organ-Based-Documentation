@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DocuPOC.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" xmlns:brushes="http://schemas.microsoft.com/winfx/2006/xaml/presentation" d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -17,8 +17,8 @@
 
     <Grid x:Name="Frame">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -26,35 +26,58 @@
             <converters:EmptyCollectionToObjectConverter x:Key="EmptyToCollapsedConverter" EmptyValue="Collapsed" NotEmptyValue="Visible" />
         </Grid.Resources>
 
-        <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="0">
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right" OverflowButtonVisibility="Auto">
+            <CommandBar.Content>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="4" VerticalAlignment="Center">Belegungsübersicht</TextBlock>
+            </CommandBar.Content>
+
+            <AppBarButton Icon="Print" Label="Übersicht drucken" Command="{Binding PrintOverview}" />
+            <AppBarButton Icon="Find" Label="Patient suchen" Command="{Binding OpenHistoryTab}" />
+            <AppBarSeparator />
+            <AppBarButton Label="Aktualisieren" Command="{Binding RefreshData}">
+                <AppBarButton.Icon>
+                    <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" RenderTransformOrigin="0.5, 0.5">
+                        <SymbolIcon.RenderTransform>
+                            <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="RefreshIconTransform" Angle="0" />
+                        </SymbolIcon.RenderTransform>
+                    </SymbolIcon>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarToggleButton Icon="NewWindow" IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Label="Aufnahmen sofort öffnen" />
+            <AppBarElementContainer>
+                <StackPanel Orientation="Horizontal" Margin="8,4" VerticalAlignment="Center">
+                    <SymbolIcon Symbol="ZoomOut" Margin="2" />
+                    <Slider Width="100" Minimum="250" Maximum="1500" Value="{Binding Width, Mode=TwoWay}" Margin="2" />
+                    <SymbolIcon Symbol="ZoomIn" Margin="2" />
+                </StackPanel>
+            </AppBarElementContainer>
+        </CommandBar>
+
+
+        <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <controls:HeaderedContentControl Grid.Column="0">
-                    <controls:HeaderedContentControl.Header>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}">Belegung</TextBlock>
-                    </controls:HeaderedContentControl.Header>
-
-                    <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}">
-                        <ItemsRepeater.ItemTemplate>
-                            <DataTemplate>
-                                <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
-                            </DataTemplate>
-                        </ItemsRepeater.ItemTemplate>
-                        <ItemsRepeater.Layout>
-                            <controls:WrapLayout x:Name="Wrap"
+                <ItemsRepeater x:Name="WrapRepeater" ItemsSource="{Binding Rooms}" Grid.Column="0">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <local:RoomView Width="{Binding ElementName=Frame, Path=DataContext.Width}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <controls:WrapLayout x:Name="Wrap"
                                     Orientation="Vertical"
                                     VerticalSpacing="5"
                                     HorizontalSpacing="5"
                                                         />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
-                </controls:HeaderedContentControl>
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
 
-                <controls:HeaderedContentControl Grid.Column="1" Visibility="{Binding AdmissionsWithoutRooms, Mode=TwoWay, Converter={StaticResource EmptyToCollapsedConverter}}">
+                <controls:HeaderedContentControl Grid.Column="1" Visibility="{Binding AdmissionsWithoutRooms, Mode=TwoWay, Converter={StaticResource EmptyToCollapsedConverter}}" Margin="5,0">
                     <controls:HeaderedContentControl.Header>
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}">Ohne Zimmer</TextBlock>
                     </controls:HeaderedContentControl.Header>
@@ -75,51 +98,6 @@
                 </controls:HeaderedContentControl>
             </Grid>
         </ScrollViewer>
-
-        <controls:DockPanel Grid.Row="1" >
-            <Button HorizontalAlignment="Right" Command="{Binding PrintOverview}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Print" Margin="4" />
-                    <TextBlock VerticalAlignment="Center">Übersicht drucken</TextBlock>
-                </StackPanel>
-            </Button>
-
-            <Button HorizontalAlignment="Right" ToolTipService.ToolTip="Strg + F" Command="{Binding OpenHistoryTab}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
-                <Button.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Control" Key="F" />
-                </Button.KeyboardAccelerators>
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Find" Margin="4" />
-                    <TextBlock VerticalAlignment="Center">Patienten suchen</TextBlock>
-                </StackPanel>
-            </Button>
-
-            <Button HorizontalAlignment="Right" ToolTipService.ToolTip="F5" Command="{Binding RefreshData}" controls:DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2">
-                <Button.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F5" />
-                </Button.KeyboardAccelerators>
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" Margin="4" RenderTransformOrigin="0.5, 0.5">
-                        <SymbolIcon.RenderTransform>
-                            <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="RefreshIconTransform" Angle="0" />
-                        </SymbolIcon.RenderTransform>
-                    </SymbolIcon>
-                    <TextBlock VerticalAlignment="Center">Aktualisieren</TextBlock>
-                </StackPanel>
-            </Button>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" controls:DockPanel.Dock="Right">
-                <StackPanel.Resources>
-                    <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
-                </StackPanel.Resources>
-                <CheckBox IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Content="Neue Aufnahmen sofort öffnen" Margin="2" />
-                <Slider Width="250" Minimum="250" Maximum="1500" Value="{Binding Width, Mode=TwoWay}" Margin="2" />
-                <SymbolIcon Symbol="ZoomIn" Margin="3" />
-
-
-                <FontIcon Margin="3" Glyph="&#xE946;" ToolTipService.ToolTip="{Binding DatabaseLocation}" />
-            </StackPanel>
-        </controls:DockPanel>
 
 
         <ProgressBar Grid.Row="2" Value="{Binding ProgressTime}" Maximum="{Binding RefreshInterval}" Minimum="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2" />
