@@ -23,7 +23,7 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PatientName}" HorizontalAlignment="Left" FontWeight="SemiBold" FontStretch="Condensed" Margin="2" VerticalAlignment="Bottom" />
         <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8"><Run Text="{Binding PatientAgeInYears}" /><Run FontWeight="Light" Text=" Jahre" /></TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8" ><Run Text="{Binding AdmissionTimeInDays}" /><Run FontWeight="Light" Text=" Tage Aufenthalt" /></TextBlock>
-        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" FontWeight="Bold"  />
+        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" />
         <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using DocuPOC.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,54 @@ namespace DocuPOC.ViewModels
 
         private string value;
         public string Value { get => value; set => SetProperty(ref this.value, value); }
+
+        private AdmissionDetailViewModel parent;
+        public ICommand SetContentOfParent { get; set; }
+
+        public ShowHistoryListEntry(AdmissionDetailViewModel parent)
+        {
+            this.parent = parent;
+            SetContentOfParent = new RelayCommand(UpdateContentOfParent);
+        }
+
+        private void UpdateContentOfParent()
+        {
+            switch (EntryType)
+            {
+                case EntryType.Diagnosis:
+                    parent.Diagnosis = Value;
+                    break;
+                case EntryType.Neurologic:
+                    parent.Neurology = Value;
+                    break;
+                case EntryType.Pulmonal:
+                    parent.Pulmonal = Value;
+                    break;
+                case EntryType.Cardiology:
+                    parent.Cardial = Value;
+                    break;
+                case EntryType.Renal:
+                    parent.Renal = Value;
+                    break;
+                case EntryType.Abdominal:
+                    parent.Abdominal = Value;
+                    break;
+                case EntryType.Infectiology:
+                    parent.Infectiology = Value;
+                    break;
+                case EntryType.ToDo:
+                    parent.ToDo = Value;
+                    break;
+                case EntryType.Procedere:
+                    parent.Procedere = Value;
+                    break;
+                case EntryType.Notes:
+                    parent.PatientNotes = Value;
+                    break;
+            }
+
+            WeakReferenceMessenger.Default.Send(new Messages.ShowInfoMessage(new Tuple<string, int>("Text in aktuelle Aufnahme übernommen", 2000)));
+        }
     }
 
     public class ShowHistoryViewModel : ObservableObject
@@ -171,7 +220,7 @@ namespace DocuPOC.ViewModels
                 await db.VersionedStringEntries.Where(e =>
                     e.PatientId == parent.PatientId && e.PatientId != null && filterTypes.Contains(e.EntryType)
                     ).ForEachAsync(e =>
-                tmpList.Add(new ShowHistoryListEntry()
+                tmpList.Add(new ShowHistoryListEntry(parent)
                 {
                     EntryType = e.EntryType,
                     Timestamp = e.Timestamp,
@@ -181,7 +230,7 @@ namespace DocuPOC.ViewModels
                 await db.VersionedStringEntries.Where(e =>
                     admissionsToSelect.Contains(e.AdmissionId.Value) && e.AdmissionId != null && filterTypes.Contains(e.EntryType)
                     ).ForEachAsync(e =>
-                tmpList.Add(new ShowHistoryListEntry()
+                tmpList.Add(new ShowHistoryListEntry(parent)
                 {
                     EntryType = e.EntryType,
                     Timestamp = e.Timestamp,

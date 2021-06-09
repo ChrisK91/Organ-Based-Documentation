@@ -13,7 +13,17 @@
 
             <DataTemplate x:Name="TextEntryDetails" x:DataType="viewmodels:ShowHistoryListEntry">
                 <Grid>
-                    <TextBlock Margin="5" Text="{Binding Value}" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5" Text="{Binding Value}" Grid.Row="0" TextWrapping="WrapWholeWords" />
+                    <Button Margin="5" Command="{Binding SetContentOfParent}" HorizontalAlignment="Left" Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Paste" Margin="2" />
+                            <TextBlock VerticalAlignment="Center">Übernehmen</TextBlock>
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
