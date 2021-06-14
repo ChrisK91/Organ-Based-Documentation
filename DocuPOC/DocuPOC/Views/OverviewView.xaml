@@ -30,48 +30,56 @@
             <converters:EmptyCollectionToObjectConverter x:Key="EmptyToCollapsedConverter" EmptyValue="Collapsed" NotEmptyValue="Visible" />
         </Grid.Resources>
 
-        <CommandBar Grid.Row="0" DefaultLabelPosition="Right" OverflowButtonVisibility="Auto">
-            <CommandBar.Content>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="4" VerticalAlignment="Center">Belegungsübersicht</TextBlock>
-            </CommandBar.Content>
 
-            <AppBarButton Icon="Print" Label="Übersicht drucken" Command="{Binding PrintOverview}" >
-                <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Control" Key="P" />
-                </AppBarButton.KeyboardAccelerators>
-            </AppBarButton>
-            
-            <AppBarButton Icon="Find" Label="Patient suchen" Command="{Binding OpenHistoryTab}">
-                <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Control" Key="S" />
-                </AppBarButton.KeyboardAccelerators>
-            </AppBarButton>
-            
-            <AppBarSeparator />
-            <AppBarButton Label="Aktualisieren" Command="{Binding RefreshData}">
-                <AppBarButton.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="F5" />
-                </AppBarButton.KeyboardAccelerators>
-                <AppBarButton.Icon>
-                    <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" RenderTransformOrigin="0.5, 0.5">
-                        <SymbolIcon.RenderTransform>
-                            <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="RefreshIconTransform" Angle="0" />
-                        </SymbolIcon.RenderTransform>
-                    </SymbolIcon>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            
-            <AppBarSeparator />
-            <AppBarToggleButton Icon="NewWindow" IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Label="Aufnahmen sofort öffnen" />
-            <AppBarElementContainer>
-                <StackPanel Orientation="Horizontal" Margin="8,4" VerticalAlignment="Center">
-                    <SymbolIcon Symbol="ZoomOut" Margin="2" />
-                    <Slider Width="100" Minimum="250" Maximum="1500" Value="{Binding Width, Mode=TwoWay}" Margin="2" />
-                    <SymbolIcon Symbol="ZoomIn" Margin="2" />
-                </StackPanel>
-            </AppBarElementContainer>
-        </CommandBar>
+        <controls:DropShadowPanel Grid.Row="0" Margin="0,0,0,8" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" BlurRadius="8" OffsetX="1" OffsetY="1" ShadowOpacity="0.2" Color="Black">
+            <CommandBar DefaultLabelPosition="Right" OverflowButtonVisibility="Auto" VerticalContentAlignment="Center">
+                <CommandBar.Content>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="8,0">Belegungsübersicht</TextBlock>
+                </CommandBar.Content>
 
+                <AppBarButton Icon="Print" Label="Übersicht drucken" Command="{Binding PrintOverview}" >
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="P" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+
+                <AppBarButton Icon="Find" Label="Patient suchen" Command="{Binding OpenHistoryTab}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+
+                <AppBarSeparator />
+                <AppBarButton Label="Aktualisieren" Command="{Binding RefreshData}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F5" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <SymbolIcon x:Name="RefreshIcon" Symbol="Refresh" RenderTransformOrigin="0.5, 0.5">
+                            <SymbolIcon.RenderTransform>
+                                <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="RefreshIconTransform" Angle="0" />
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarSeparator />
+                <AppBarToggleButton Icon="NewWindow" IsChecked="{Binding OpenNewAdmission, Mode=TwoWay}" Label="Aufnahmen sofort öffnen" />
+
+                <AppBarButton Label="Verkleinern" Icon="ZoomOut" Command="{Binding ZoomOut}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="Subtract" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+
+                <AppBarButton Label="Vergrößern" Icon="ZoomIn" Command="{Binding ZoomIn}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="Add" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+
+            </CommandBar>
+        </controls:DropShadowPanel>
 
         <ScrollViewer VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="2">
             <Grid>
@@ -95,7 +103,7 @@
                     </ItemsRepeater.Layout>
                 </ItemsRepeater>
 
-                <controls:HeaderedContentControl Grid.Column="1" Visibility="{Binding AdmissionsWithoutRooms, Mode=TwoWay, Converter={StaticResource EmptyToCollapsedConverter}}" Margin="5,0">
+                <controls:HeaderedContentControl Grid.Column="1" Visibility="{Binding AdmissionsWithoutRooms, Mode=TwoWay, Converter={StaticResource EmptyToCollapsedConverter}}">
                     <controls:HeaderedContentControl.Header>
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}">Ohne Zimmer</TextBlock>
                     </controls:HeaderedContentControl.Header>

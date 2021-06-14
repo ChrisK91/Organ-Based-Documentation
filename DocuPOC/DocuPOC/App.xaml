@@ -13,6 +13,11 @@
             <!-- Other app resources here -->
 
             <x:Double x:Key="ContentDialogMaxWidth">800</x:Double>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

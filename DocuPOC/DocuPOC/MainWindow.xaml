@@ -63,7 +63,7 @@
                         <TabViewItem.IconSource>
                             <SymbolIconSource Symbol="{Binding Symbol}" />
                         </TabViewItem.IconSource>
-                        <Grid Padding="5">
+                        <Grid>
                             <ContentControl ContentTemplateSelector="{StaticResource TabTemplateSelector}" Content="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                         </Grid>
                     </TabViewItem>

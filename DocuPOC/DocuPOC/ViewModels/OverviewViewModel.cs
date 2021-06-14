@@ -40,7 +40,7 @@ namespace DocuPOC.ViewModels
         public int Width
         {
             get => width;
-            set => SetProperty(ref width, value);
+            set { if (value > 50) { SetProperty(ref width, value); }; }
         }
 
 
@@ -62,6 +62,8 @@ namespace DocuPOC.ViewModels
         public IRelayCommand PrintOverview { get; set; }
         public IRelayCommand OpenHistoryTab { get; set; }
         public IRelayCommand RefreshData { get; set; }
+        public IRelayCommand ZoomIn { get; set; }
+        public IRelayCommand ZoomOut { get; set; }
 
         DispatcherTimer refreshTimer;
 
@@ -89,6 +91,9 @@ namespace DocuPOC.ViewModels
             {
                 LoadData();
             });
+
+            ZoomIn = new RelayCommand(() => { Width += 50; });
+            ZoomOut = new RelayCommand(() => { Width -= 50; });
 
             LoadData();
 

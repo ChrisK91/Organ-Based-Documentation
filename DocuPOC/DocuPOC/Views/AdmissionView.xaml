@@ -5,63 +5,77 @@
     xmlns:local="using:DocuPOC.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" d:DataContext="{d:DesignInstance Type=viewmodels:AdmissionViewModel}"
-    mc:Ignorable="d" DoubleTapped="UserControl_DoubleTapped">
+    mc:Ignorable="d" DoubleTapped="UserControl_DoubleTapped" Margin="5">
 
-    <Grid Background="{ThemeResource SystemChromeLowColor}" Padding="5" BorderBrush="Transparent" BorderThickness="1.5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PatientName}" HorizontalAlignment="Left" FontWeight="SemiBold" FontStretch="Condensed" Margin="2" VerticalAlignment="Bottom" />
-        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8"><Run Text="{Binding PatientAgeInYears}" /><Run FontWeight="Light" Text=" Jahre" /></TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8" ><Run Text="{Binding AdmissionTimeInDays}" /><Run FontWeight="Light" Text=" Tage Aufenthalt" /></TextBlock>
-        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" />
-        <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
+    <controls:DropShadowPanel HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" BlurRadius="8" OffsetX="1" OffsetY="1" ShadowOpacity="0.08" Color="Black">
+        <Grid Background="{ThemeResource SystemChromeLowColor}" Padding="5">
+            <Grid.ContextFlyout>
+                <CommandBarFlyout>
+                    <CommandBarFlyout.PrimaryCommands>
+                        <AppBarButton Label="Details" Command="{Binding OpenAdmissionCommand}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
 
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-            <Button ToolTipService.ToolTip="In anderen Raum umziehen..." Margin="2">
-                <FontIcon Glyph="&#xE748;" />
-                <Button.Flyout>
-                    <Flyout>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Margin="2">Ziel:</TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <ComboBox Margin="2" ItemsSource="{Binding PossibleRooms}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}" />
-                                <Button Margin="2" Command="{Binding MovePatientCommand}">Umziehen</Button>
-                            </StackPanel>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-            </Button>
+                        <AppBarButton Label="Drucken" Icon="Print" Command="{Binding PrintAdmissionCommand}" />
 
-            <Button ToolTipService.ToolTip="Details..." Margin="2" Command="{Binding OpenAdmissionCommand}">
-                <FontIcon Glyph="&#xE946;" />
-            </Button>
+                    </CommandBarFlyout.PrimaryCommands>
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarButton Label="Umziehen" AllowFocusOnInteraction="True">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE748;" />
+                            </AppBarButton.Icon>
 
-            <Button ToolTipService.ToolTip="Drucken..." Margin="2" Command="{Binding PrintAdmissionCommand}">
-                <SymbolIcon Symbol="Print" />
-            </Button>
+                            <AppBarButton.Flyout>
+                                <Flyout>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Margin="2">Ziel:</TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox Margin="2" ItemsSource="{Binding PossibleRooms}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"/>
+                                            <Button Margin="2" Command="{Binding MovePatientCommand}">Umziehen</Button>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Flyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
 
-            <Button ToolTipService.ToolTip="Entlassen..." Margin="2">
-                <FontIcon Glyph="&#xE805;" />
+                        <AppBarButton Label="Entlassen">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE805;" />
+                            </AppBarButton.Icon>
 
-                <Button.Flyout>
-                    <Flyout>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                            <CalendarDatePicker Margin="2" Header="Entlassdatum" Date="{Binding DischargeDate, Mode=TwoWay}" />
-                            <Button VerticalAlignment="Bottom" Margin="2" Command="{Binding DischargeAdmissionCommand}">Entlassen</Button>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-            </Button>
-        </StackPanel>
-    </Grid>
+                            <AppBarButton.Flyout>
+                                <Flyout>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <CalendarDatePicker Margin="2" Header="Entlassdatum" Date="{Binding DischargeDate, Mode=TwoWay}" />
+                                        <Button VerticalAlignment="Bottom" Margin="2" Command="{Binding DischargeAdmissionCommand}">Entlassen</Button>
+                                    </StackPanel>
+                                </Flyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                    </CommandBarFlyout.SecondaryCommands>
+                </CommandBarFlyout>
+            </Grid.ContextFlyout>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PatientName}" HorizontalAlignment="Left" FontWeight="SemiBold" FontStretch="Condensed" Margin="2" VerticalAlignment="Bottom" />
+            <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8"><Run Text="{Binding PatientAgeInYears}" /><Run FontWeight="Light" Text=" Jahre" /></TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Margin="2,2,2,8" ><Run Text="{Binding AdmissionTimeInDays}" /><Run FontWeight="Light" Text=" Tage Aufenthalt" /></TextBlock>
+            <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" Text="{Binding PatientNotes}" HorizontalAlignment="Left" />
+            <controls:MarkdownTextBlock Background="Transparent" Grid.Column="0" Grid.Row="3" Margin="2" Grid.ColumnSpan="2" Text="{Binding Diagnosis}" HorizontalAlignment="Left" />
+        </Grid>
+    </controls:DropShadowPanel>
 </UserControl>
