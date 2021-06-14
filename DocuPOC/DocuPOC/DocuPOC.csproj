@@ -9,6 +9,7 @@
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\HeaderedDetailEntry.xaml" />
     <None Remove="Templates\OverviewTemplate.html" />
     <None Remove="Templates\PatientPrintoutTemplate.html" />
     <None Remove="Views\AddNewPatientView.xaml" />
@@ -33,7 +34,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="7.0.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.0.2" />
     <PackageReference Include="DotLiquid" Version="2.1.457" />
-    <PackageReference Include="Markdig" Version="0.24.0" />
+    <PackageReference Include="Markdig" Version="0.25.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.7" />
     <PackageReference Include="Microsoft.ProjectReunion" Version="0.5.7" />
@@ -41,6 +42,15 @@
     <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.7" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\HeaderedDetailEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Update="Ressources\backdrop.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
