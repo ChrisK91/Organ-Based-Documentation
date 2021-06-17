@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using DocuPOC.Messages;
 using DocuPOC.Models;
 using System;
+using System.Windows.Input;
 
 namespace DocuPOC.ViewModels
 {
@@ -173,6 +174,22 @@ namespace DocuPOC.ViewModels
             WeakReferenceMessenger.Default.Send(new ShowInfoMessage(new Tuple<string, int>("Daten gespeichert", 1500)));
 
             IsDirty = false;
+        }
+
+        private RelayCommand formatBold;
+        public ICommand FormatBold => formatBold ??= new RelayCommand(PerformFormatBold);
+
+        private void PerformFormatBold()
+        {
+            WeakReferenceMessenger.Default.Send(new FormatBold(null));
+        }
+
+        private RelayCommand formatCursive;
+        public ICommand FormatCursive => formatCursive ??= new RelayCommand(PerformFormatCursive);
+
+        private void PerformFormatCursive()
+        {
+            WeakReferenceMessenger.Default.Send(new FormatItalic(null));
         }
     }
 }

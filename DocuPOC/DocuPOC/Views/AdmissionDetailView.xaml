@@ -46,12 +46,12 @@
 
                 <AppBarSeparator />
 
-                <AppBarButton Icon="Save" Label="Speichern" Command="{Binding SaveChanges}" AccessKey="S" >
+                <AppBarButton Icon="Save" Label="Speichern" Command="{Binding SaveChanges}" AccessKey="S" LabelPosition="Collapsed" >
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="S" />
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
-                <AppBarButton Icon="Print" Label="Drucken" Command="{Binding PrintAdmission}" AccessKey="P" >
+                <AppBarButton Icon="Print" Label="Drucken" Command="{Binding PrintAdmission}" AccessKey="P" LabelPosition="Collapsed" >
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="P" />
                     </AppBarButton.KeyboardAccelerators>
@@ -65,6 +65,21 @@
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
 
+
+                <AppBarSeparator />
+
+                <AppBarButton Icon="Bold" Label="Fett" LabelPosition="Collapsed" AccessKey="F" Command="{Binding FormatBold}">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="F" />
+                        <KeyboardAccelerator Modifiers="Control, Shift" Key="F" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+                <AppBarButton Icon="Italic" Label="Kursiv" LabelPosition="Collapsed" AccessKey="K" Command="{Binding FormatCursive}" >
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="K" />
+                        <KeyboardAccelerator Modifiers="Control, Shift" Key="K" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
             </CommandBar>
         </controls:DropShadowPanel>
 

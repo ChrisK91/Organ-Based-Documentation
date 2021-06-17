@@ -39,4 +39,14 @@ namespace DocuPOC.Messages
     {
         public UpdateRefreshIndicator(object o) : base(o) { }
     }
+
+    public class FormatBold : ValueChangedMessage<object>
+    {
+        public FormatBold(object o) : base(o) { }
+    }
+
+    public class FormatItalic : ValueChangedMessage<object>
+    {
+        public FormatItalic(object o) : base(o) { }
+    }
 }

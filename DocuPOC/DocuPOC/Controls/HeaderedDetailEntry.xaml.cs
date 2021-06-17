@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using DocuPOC.Messages;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -60,6 +62,37 @@ namespace DocuPOC.Controls
         {
             this.InitializeComponent();
 
+            WeakReferenceMessenger.Default.Register<FormatBold>(this, formatBold);
+            WeakReferenceMessenger.Default.Register<FormatItalic>(this, formatItalic);
+
+        }
+
+        private void formatItalic(object recipient, FormatItalic message)
+        {
+            togglePadding("*");
+        }
+
+        private void formatBold(object recipient, FormatBold message)
+        {
+            togglePadding("**");
+        }
+
+        private void togglePadding(string v, string v2 = null)
+        {
+            if (EditBox.SelectionLength > 0)
+            {
+                if (EditBox.SelectedText.StartsWith(v) && EditBox.SelectedText.EndsWith(v2 ?? v))
+                {
+                    var text = EditBox.SelectedText.Remove(0, v.Length);
+                    text = text.Remove(text.Length - (v2 ?? v).Length, (v2 ?? v).Length);
+
+                    EditBox.SelectedText = text;
+                }
+                else
+                {
+                    EditBox.SelectedText = v + EditBox.SelectedText + (v2 ?? v);
+                }
+            }
         }
 
         private void EditBox_TextChanged(object sender, TextChangedEventArgs e)
