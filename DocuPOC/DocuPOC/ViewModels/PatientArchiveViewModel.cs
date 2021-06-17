@@ -20,9 +20,6 @@ namespace DocuPOC.ViewModels
 
         public bool CanDrag { get => true; }
 
-        private bool dataLoading;
-        public bool DataLoading { get => dataLoading; set => SetProperty(ref dataLoading, value); }
-
         private string searchName;
         public string SearchName { get => searchName; set { SetProperty(ref searchName, value); SearchDataCommand.NotifyCanExecuteChanged(); } }
 
@@ -75,7 +72,7 @@ namespace DocuPOC.ViewModels
 
         private async void PerformSearch()
         {
-            DataLoading = true;
+            Helpers.StartLoading();
             PatientList.Clear();
 
             var db = new Database.DataContext();
@@ -100,12 +97,12 @@ namespace DocuPOC.ViewModels
             SelectedAdmission = null;
             SelectedPatient = null;
 
-            DataLoading = false;
+            Helpers.DoneLoading();
         }
 
         private async void LoadDataAsync()
         {
-            DataLoading = true;
+            Helpers.StartLoading();
             PatientList.Clear();
 
             var db = new Database.DataContext();
@@ -124,7 +121,7 @@ namespace DocuPOC.ViewModels
             SelectedPatient = null;
             SelectedAdmission = null;
 
-            DataLoading = false;
+            Helpers.DoneLoading();
         }
     }
 }

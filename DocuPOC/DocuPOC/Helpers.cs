@@ -1,5 +1,8 @@
 ﻿using Bogus;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI.UI.Controls;
 using DocuPOC.Database;
+using DocuPOC.Messages;
 using DocuPOC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -149,6 +152,16 @@ namespace DocuPOC
         public static int DaysDifference(this DateTimeOffset date)
         {
             return date.DateTime.DaysDifference();
+        }
+
+        public static void StartLoading(object sender = null)
+        {
+            WeakReferenceMessenger.Default.Send(new StartLoading(sender));
+        }
+
+        public static void DoneLoading(object sender = null)
+        {
+            WeakReferenceMessenger.Default.Send(new DoneLoading(sender));
         }
     }
 }

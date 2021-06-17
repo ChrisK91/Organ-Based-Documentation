@@ -100,6 +100,7 @@ namespace DocuPOC.ViewModels
 
             SelectedRoom = RoomList.Where(i => i.Room.RoomId == r.RoomId).FirstOrDefault();
 
+            //ToDo: Hook into global loading pipeline
             LoadDataAsync();
         }
 

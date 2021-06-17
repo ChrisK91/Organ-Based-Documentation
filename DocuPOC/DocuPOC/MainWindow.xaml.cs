@@ -48,6 +48,8 @@ namespace DocuPOC
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private int loadingCounter;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -74,6 +76,33 @@ namespace DocuPOC
                 ShowHistoryDialog.DataContext = new ShowHistoryViewModel(m.Value);
                 await ShowHistoryDialog.ShowAsync();
             });
+
+            WeakReferenceMessenger.Default.Register<StartLoading>(this, startLoading);
+            WeakReferenceMessenger.Default.Register<DoneLoading>(this, doneLoading);
+        }
+
+        private void doneLoading(object recipient, DoneLoading message)
+        {
+            loadingCounter--;
+            updateLoadingVisibility();
+        }
+
+        private void startLoading(object recipient, StartLoading message)
+        {
+            loadingCounter++;
+            updateLoadingVisibility();
+        }
+
+        private void updateLoadingVisibility()
+        {
+            if(loadingCounter > 0 && !LoadingIndicator.IsLoading)
+            {
+                LoadingIndicator.IsLoading = true;
+            }
+            else if(loadingCounter == 0)
+            {
+                LoadingIndicator.IsLoading = false;
+            }
         }
 
         private void TabViewItem_CloseRequested(TabViewItem sender, TabViewTabCloseRequestedEventArgs args)

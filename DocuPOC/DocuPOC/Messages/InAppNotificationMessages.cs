@@ -25,8 +25,18 @@ namespace DocuPOC.Messages
         public ShowHistory(AdmissionDetailViewModel value) : base(value) { }
     }
 
-    public class DisplayLoadingIndicator : ValueChangedMessage<object>
+    public class StartLoading : ValueChangedMessage<object>
     {
-        public DisplayLoadingIndicator(object o) : base(o) { }
+        public StartLoading(object o) : base(o) { }
+    }
+
+    public class DoneLoading : ValueChangedMessage<object>
+    {
+        public DoneLoading(object o) : base(o) { }
+    }
+
+    public class UpdateRefreshIndicator : ValueChangedMessage<object>
+    {
+        public UpdateRefreshIndicator(object o) : base(o) { }
     }
 }

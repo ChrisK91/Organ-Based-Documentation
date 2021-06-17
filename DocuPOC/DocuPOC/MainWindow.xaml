@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DocuPOC"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:views="using:DocuPOC.Views" xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters" xmlns:viewmodels="using:DocuPOC.ViewModels" xmlns:views="using:DocuPOC.Views" xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers" xmlns:brushes="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d">
 
     <Grid>
@@ -15,7 +15,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Ressources/backdrop.jpg" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center" />
         </Grid.Background>
-        
+
         <Grid.Resources>
             <DataTemplate x:Key="OverviewTemplate" x:DataType="viewmodels:OverviewViewModel">
                 <views:OverviewView />
@@ -96,5 +96,20 @@
         <ContentDialog x:Name="ShowHistoryDialog" PrimaryButtonText="Schließen" FullSizeDesired="True" MinWidth="800">
             <views:ShowHistoryView DataContext="{Binding}" />
         </ContentDialog>
+
+
+        <controls:Loading  x:Name="LoadingIndicator">
+            <controls:Loading.Background>
+                <brushes:AcrylicBrush
+                              TintColor="Black"
+                              TintOpacity="0.4" />
+            </controls:Loading.Background>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <ProgressRing IsIndeterminate="True" Margin="5" />
+                <TextBlock>Lade Daten...</TextBlock>
+            </StackPanel>
+        </controls:Loading>
+
     </Grid>
 </Window>

@@ -145,19 +145,6 @@
 
             <controls:GridSplitter Grid.Column="3">
             </controls:GridSplitter>
-
-            <controls:Loading IsLoading="{Binding DataLoading}" Grid.ColumnSpan="5">
-                <controls:Loading.Background>
-                    <brushes:AcrylicBrush BackgroundSource="Backdrop"
-                              TintColor="Black"
-                              TintOpacity="0.4" />
-                </controls:Loading.Background>
-
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <ProgressRing IsIndeterminate="True" Margin="5" />
-                    <TextBlock>Lade Daten...</TextBlock>
-                </StackPanel>
-            </controls:Loading>
         </Grid>
     </ScrollViewer>
 </UserControl>

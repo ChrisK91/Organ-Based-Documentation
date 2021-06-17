@@ -134,7 +134,7 @@ namespace DocuPOC.ViewModels
 
         private void LoadData()
         {
-            WeakReferenceMessenger.Default.Send(new DisplayLoadingIndicator(null));
+            WeakReferenceMessenger.Default.Send(new UpdateRefreshIndicator(null));
             Rooms.Clear();
             AdmissionsWithoutRooms.Clear();
 

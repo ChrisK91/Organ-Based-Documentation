@@ -26,7 +26,7 @@ namespace DocuPOC.Views
         {
             this.InitializeComponent();
 
-            WeakReferenceMessenger.Default.Register<OverviewView, DisplayLoadingIndicator>(this, (r, m)=>{ RotateRefreshIcon.Begin(); });
+            WeakReferenceMessenger.Default.Register<OverviewView, UpdateRefreshIndicator>(this, (r, m)=>{ RotateRefreshIcon.Begin(); });
         }
     }
 }
