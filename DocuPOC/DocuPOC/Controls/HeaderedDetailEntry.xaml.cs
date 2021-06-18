@@ -33,6 +33,17 @@ namespace DocuPOC.Controls
             set { HeaderTextblock.Text = value; }
         }
 
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            "IsReadOnly",
+            typeof(bool),
+            typeof(TextBox), null
+            );
+        public bool IsReadOnly
+        {
+            get { return EditBox.IsReadOnly; }
+            set { EditBox.IsReadOnly = value; }
+        }
+
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
